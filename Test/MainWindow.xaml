@@ -35,7 +35,7 @@
         <Button x:Name="btnCreateCategory" Content="Create Category" HorizontalAlignment="Left" Margin="22,47,0,0" VerticalAlignment="Top" Width="120" Height="52" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click"/>
         <TextBox x:Name="txboxCreateCategory" HorizontalAlignment="Left" Height="35" Margin="22,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="508,198,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click"/>
-        <Button x:Name="btnDeleteCategory" Content="Delete Category" HorizontalAlignment="Left" Margin="171,297,0,0" VerticalAlignment="Top" Width="103" FontFamily="Poor Richard" FontSize="14"/>
+        <Button x:Name="btnDeleteCategory" Content="Delete Category" HorizontalAlignment="Left" Margin="171,297,0,0" VerticalAlignment="Top" Width="103" FontFamily="Poor Richard" FontSize="14" Click="BtnDeleteCategory_Click"/>
         <Button x:Name="btnDeleteSavefile1" Content="Delete Savefile" HorizontalAlignment="Left" Margin="346,297,0,0" VerticalAlignment="Top" Width="103" FontFamily="Poor Richard" Height="20" FontSize="14" Click="BtnDeleteSavefile1_Click"/>
 
     </Grid>

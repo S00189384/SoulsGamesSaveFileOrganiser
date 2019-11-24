@@ -243,5 +243,27 @@ namespace Test
                 tblkErrorMessage.Text = "No Savefile Selected.";
             }
         }
+
+        private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if(lstboxCategories.SelectedIndex != -1)
+            {
+                Category categoryToDelete = categories[lstboxCategories.SelectedIndex];
+                categories.Remove(categoryToDelete);
+
+                System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName, true);
+
+                lstboxCategories.ItemsSource = null;
+                lstboxCategories.ItemsSource = categories;
+
+                lstBoxSavefiles.ItemsSource = null;
+                //lstBoxSavefiles.ItemsSource = categories[lstboxCategories.SelectedIndex].savefiles;
+            }
+            else
+            {
+                tblkErrorMessage.Text = "No Category Selected.";
+            }
+
+        }
     }
 }
