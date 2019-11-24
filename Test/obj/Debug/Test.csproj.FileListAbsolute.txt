@@ -13,3 +13,18 @@ C:\Users\Shane\Desktop\Test\Test\obj\Debug\Test.csproj.GenerateResource.cache
 C:\Users\Shane\Desktop\Test\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
 C:\Users\Shane\Desktop\Test\Test\obj\Debug\Test.exe
 C:\Users\Shane\Desktop\Test\Test\obj\Debug\Test.pdb
+D:\Games Programming\EmulatorSaves\Test\bin\Debug\Test.exe.config
+D:\Games Programming\EmulatorSaves\Test\bin\Debug\Test.exe
+D:\Games Programming\EmulatorSaves\Test\bin\Debug\Test.pdb
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.csprojAssemblyReference.cache
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\MainWindow.g.cs
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\App.g.cs
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test_MarkupCompile.cache
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test_MarkupCompile.lref
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\MainWindow.baml
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.g.resources
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.Properties.Resources.resources
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.csproj.GenerateResource.cache
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.exe
+D:\Games Programming\EmulatorSaves\Test\obj\Debug\Test.pdb

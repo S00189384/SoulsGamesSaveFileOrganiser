@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="MainWindow" Height="381.356" Width="645.551">
+        Title="DeS Emulator Save File Organiser" Height="381.356" Width="645.551">
     <Grid Margin="0,0,0,-1" RenderTransformOrigin="0.5,0.5">
         <Grid.RenderTransform>
             <TransformGroup>
@@ -15,9 +15,9 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <ListBox x:Name="lstBoxSavefiles" HorizontalAlignment="Left" Height="269" Margin="169,47,0,0" VerticalAlignment="Top" Width="211"/>
-        <TextBlock x:Name="tblkHeader2" HorizontalAlignment="Left" Margin="176,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="163" Text="Save File List" FontFamily="Poor Richard" FontSize="24" Foreground="Black" Background="White" FontStyle="Italic"/>
-        <Button x:Name="btnCreateSavefile" Content="Create Savefile" HorizontalAlignment="Left" Margin="33,73,0,0" VerticalAlignment="Top" Width="124" Click="BtnCreateSavefile_Click" Height="52" FontFamily="Poor Richard" FontStyle="Italic" FontSize="20" RenderTransformOrigin="0.5,0.5">
+        <ListBox x:Name="lstBoxSavefiles" HorizontalAlignment="Left" Height="250" Margin="331,42,0,0" VerticalAlignment="Top" Width="138"/>
+        <TextBlock x:Name="tblkHeader2" HorizontalAlignment="Left" Margin="354,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="163" Text="Save Files" FontFamily="Poor Richard" FontSize="24" Foreground="Black" Background="White" FontStyle="Italic"/>
+        <Button x:Name="btnCreateSavefile" Content="Create Savefile" HorizontalAlignment="Left" Margin="22,170,0,0" VerticalAlignment="Top" Width="121" Click="BtnCreateSavefile_Click" Height="52" FontFamily="Poor Richard" FontStyle="Italic" FontSize="20" RenderTransformOrigin="0.5,0.5">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -27,9 +27,16 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <TextBox x:Name="txboxSavefileName" HorizontalAlignment="Left" Height="35" Margin="36,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnImportSavestate" Content="Import Save To Game" HorizontalAlignment="Left" Margin="396,125,0,0" VerticalAlignment="Top" Width="139" Click="BtnImportSavestate_Click" Height="59" FontFamily="Poor Richard" FontSize="16"/>
-        <TextBlock x:Name="tblkErrorMessage" HorizontalAlignment="Left" Margin="396,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="73" Width="146" FontSize="24" FontFamily="Times New Roman" FontStyle="Italic"/>
+        <TextBox x:Name="txboxSavefileName" HorizontalAlignment="Left" Height="35" Margin="22,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnImportSavestate" Content="Import Save" HorizontalAlignment="Left" Margin="508,129,0,0" VerticalAlignment="Top" Width="93" Click="BtnImportSavestate_Click" Height="50" FontFamily="Poor Richard" FontSize="16"/>
+        <TextBlock x:Name="tblkErrorMessage" HorizontalAlignment="Left" Margin="481,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="89" Width="140" FontSize="24" FontFamily="Times New Roman" FontStyle="Italic"/>
+        <ListBox x:Name="lstboxCategories" HorizontalAlignment="Left" Height="250" Margin="163,42,0,0" VerticalAlignment="Top" Width="127" SelectionChanged="LstboxCategories_SelectionChanged"/>
+        <TextBlock x:Name="tblkHeader1" HorizontalAlignment="Left" Margin="171,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127" Text="Categories" FontFamily="Poor Richard" FontSize="24" Foreground="Black" Background="White" FontStyle="Italic"/>
+        <Button x:Name="btnCreateCategory" Content="Create Category" HorizontalAlignment="Left" Margin="22,47,0,0" VerticalAlignment="Top" Width="120" Height="52" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click"/>
+        <TextBox x:Name="txboxCreateCategory" HorizontalAlignment="Left" Height="35" Margin="22,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="508,198,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click"/>
+        <Button x:Name="btnDeleteCategory" Content="Delete Category" HorizontalAlignment="Left" Margin="171,297,0,0" VerticalAlignment="Top" Width="103" FontFamily="Poor Richard" FontSize="14"/>
+        <Button x:Name="btnDeleteSavefile1" Content="Delete Savefile" HorizontalAlignment="Left" Margin="346,297,0,0" VerticalAlignment="Top" Width="103" FontFamily="Poor Richard" Height="20" FontSize="14" Click="BtnDeleteSavefile1_Click"/>
 
     </Grid>
 </Window>

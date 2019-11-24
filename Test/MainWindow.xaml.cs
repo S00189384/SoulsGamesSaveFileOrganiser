@@ -24,83 +24,112 @@ namespace Test
         System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         DirectoryInfo mainFolder;
-        List<Folder> folders;
-        List<Savefile> savefiles;
+        List<Category> categories;
 
         public MainWindow()
         {
             InitializeComponent();
-            folders = new List<Folder>();
-            savefiles = new List<Savefile>();
+            categories = new List<Category>();
 
             mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Demon's Souls Savefiles");
 
-            string[] foldersInMainFolder =  System.IO.Directory.GetDirectories(mainFolder.FullName);
+            string[] categoriesInMainFolder =  System.IO.Directory.GetDirectories(mainFolder.FullName);
 
-            for (int i = 0; i < foldersInMainFolder.Length; i++)
+            //Go through all categories already in main folder and create category objects.
+            for (int c = 0; c < categoriesInMainFolder.Length; c++)
             {
-                Savefile newsavefile = new Savefile(System.IO.Path.GetFileName(foldersInMainFolder[i]), new DirectoryInfo(foldersInMainFolder[i]));
-                savefiles.Add(newsavefile);
+                Category newCategory = new Category(System.IO.Path.GetFileName(categoriesInMainFolder[c]), new DirectoryInfo(categoriesInMainFolder[c]));
+                categories.Add(newCategory);
+
+                //Get all savefiles in category and add them to category savefile list.
+                string[] savefilesInCategory = System.IO.Directory.GetDirectories(newCategory.directoryInfo.FullName);
+                for (int s = 0; s < savefilesInCategory.Length; s++)
+                {
+                    newCategory.savefiles.Add(new Savefile(System.IO.Path.GetFileName(savefilesInCategory[s]), new DirectoryInfo(savefilesInCategory[s]), newCategory));
+                }
+
             }
+            
 
-            lstBoxSavefiles.ItemsSource = savefiles;
 
+            lstboxCategories.ItemsSource = categories;
         }
 
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
+            //If text is in text box.
             if(txboxSavefileName.Text != "")
             {
-                bool SaveFileAlreadyExists = false;
-                Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + txboxSavefileName.Text));
-
-                foreach (Savefile savefile in savefiles)
+                //If category is selected.
+                if(lstboxCategories.SelectedIndex != -1)
                 {
-                    if (savefile.Name == newSaveFile.Name)
-                        SaveFileAlreadyExists = true;
-                }
+                    //Checking if savefile with same name already exists in that category.
+                    bool SaveFileAlreadyExists = false;                 
+                    foreach (Savefile savefile in categories[lstboxCategories.SelectedIndex].savefiles)
+                    {
+                        if (savefile.Name == txboxSavefileName.Text)
+                            SaveFileAlreadyExists = true;
+                    }
 
-                if(!SaveFileAlreadyExists)
-                {
-                    savefiles.Add(newSaveFile);
+                    if (!SaveFileAlreadyExists)
+                    {
+                        //Create savefile and add to selected categories list of savefiles.
+                        Savefile newSaveFile = new Savefile
+                        (txboxSavefileName.Text, System.IO.Directory.CreateDirectory(categories[lstboxCategories.SelectedIndex].directoryInfo.FullName + "\\" + txboxSavefileName.Text),
+                        categories[lstboxCategories.SelectedIndex]);
+                        categories[lstboxCategories.SelectedIndex].savefiles.Add(newSaveFile);
 
-                    lstBoxSavefiles.ItemsSource = null;
-                    lstBoxSavefiles.ItemsSource = savefiles;
+                        CreateSaveFile(newSaveFile);
 
-                    CreateSaveFile(newSaveFile);
+                        lstBoxSavefiles.ItemsSource = null;
+                        lstBoxSavefiles.ItemsSource = categories[lstboxCategories.SelectedIndex].savefiles;
 
-                    txboxSavefileName.Text = "";
-                    tblkErrorMessage.Text = "";
+                        txboxSavefileName.Text = "";
+                        tblkErrorMessage.Text = "";
+                    }
+                    else
+                    {
+                        tblkErrorMessage.Text = "Savefile with same name already exists.";
+                    }
                 }
                 else
                 {
-                    tblkErrorMessage.Text = "Savefile with same name already exists.";
-                }
-
+                    tblkErrorMessage.Text = "No category selected.";
+                }              
+            }
+            else
+            {
+                tblkErrorMessage.Text = "You must have a name for savefile.";
             }
         }
 
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
         {
             //If save file is selected.
-            if(lstBoxSavefiles.SelectedIndex != -1)
+            if(lstboxCategories.SelectedIndex != -1)
             {
-                foreach (FileInfo file in saveFileLocation.GetFiles())
+                if (lstBoxSavefiles.SelectedIndex != -1)
                 {
-                    file.Delete();
+                    foreach (FileInfo file in saveFileLocation.GetFiles())
+                    {
+                        file.Delete();
+                    }
+
+                    Savefile selectedSaveFile = categories[lstboxCategories.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+                    ImportSavestate(selectedSaveFile);
+
+                    tblkErrorMessage.Text = "";
                 }
-
-                Savefile selectedSaveFile = savefiles[lstBoxSavefiles.SelectedIndex];
-
-                ImportSavestate(selectedSaveFile);
-
-                tblkErrorMessage.Text = "";
+                else
+                {
+                    tblkErrorMessage.Text = "No savefile selected.";
+                }
             }
             else
             {
-                tblkErrorMessage.Text = "No savefile selected.";
+                tblkErrorMessage.Text = "No category selected.";
             }
-
+           
         }
 
         private void ImportSavestate(Savefile savefile)
@@ -118,7 +147,7 @@ namespace Test
             }
         }
 
-        //Gets actual files and adds them to folder.
+        //Gets actual savefile and adds to desired folder.
         private void CreateSaveFile(Savefile savefile)
         {
             string[] files = System.IO.Directory.GetFiles(saveFileLocation.FullName);
@@ -132,6 +161,86 @@ namespace Test
                 string destFile = System.IO.Path.Combine(savefile.directoryInfo.FullName, fileName);
                 //Copy method needs exact location of source file (Emulator folder) and destination file(Des Folder) and copies file here.
                 System.IO.File.Copy(nameoffile, destFile, true);
+            }
+        }
+
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if(txboxCreateCategory.Text != "")
+            {
+                bool CategoryAlreadyExists = false;
+                Category newCategory = new Category(txboxCreateCategory.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + txboxCreateCategory.Text));
+
+                foreach (Category category in categories)
+                {
+                    if (category.Name == newCategory.Name)
+                        CategoryAlreadyExists = true;
+                }
+
+                if(!CategoryAlreadyExists)
+                {
+                    categories.Add(newCategory);
+
+                    lstboxCategories.ItemsSource = null;
+                    lstboxCategories.ItemsSource = categories;
+
+                    tblkErrorMessage.Text = "";
+                    txboxCreateCategory.Text = "";
+                }
+                else
+                {
+                    tblkErrorMessage.Text = "Category already exists.";
+                }
+            }
+        }
+
+        private void LstboxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(lstboxCategories.SelectedIndex != -1)
+            {
+                int selectedIndex = lstboxCategories.SelectedIndex;
+
+                lstBoxSavefiles.ItemsSource = null;
+                lstBoxSavefiles.ItemsSource = categories[selectedIndex].savefiles;
+            }
+        }
+
+        private void BtnUpdateSave_Click(object sender, RoutedEventArgs e)
+        {
+            if(lstboxCategories.SelectedIndex != -1)
+            {
+                if (lstBoxSavefiles.SelectedIndex != -1)
+                {
+                    Savefile saveFileToUpdate = categories[lstboxCategories.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+
+                    CreateSaveFile(saveFileToUpdate);
+                }
+                else
+                {
+                    tblkErrorMessage.Text = "No Savefile Selected.";
+                }
+            }
+            else
+            {
+                tblkErrorMessage.Text = "No Category Selected.";
+            }
+        }
+
+        private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
+        {
+            if(lstBoxSavefiles.SelectedIndex != -1)
+            {
+                Savefile savefile = categories[lstboxCategories.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+
+                System.IO.Directory.Delete(savefile.directoryInfo.FullName, true);
+                categories[lstboxCategories.SelectedIndex].savefiles.Remove(savefile);
+
+                lstBoxSavefiles.ItemsSource = null;
+                lstBoxSavefiles.ItemsSource = categories[lstboxCategories.SelectedIndex].savefiles;
+            }
+            else
+            {
+                tblkErrorMessage.Text = "No Savefile Selected.";
             }
         }
     }
