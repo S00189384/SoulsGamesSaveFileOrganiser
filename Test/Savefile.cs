@@ -11,13 +11,13 @@ namespace Test
     {
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }
-        public Category category { get; set; }
+        public Segment segment { get; set; }
 
-        public Savefile(string Name,DirectoryInfo directoryInfo,Category category)
+        public Savefile(string Name,DirectoryInfo directoryInfo,Segment segment)
         {
             this.Name = Name;
             this.directoryInfo = directoryInfo;
-            this.category = category;
+            this.segment = segment;
         }
 
         public override string ToString()

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    class Category
+    class Segment
     {
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }
         public List<Savefile> savefiles { get; set; }
 
-        public Category(string Name,DirectoryInfo directoryInfo)
+        public Segment(string Name,DirectoryInfo directoryInfo)
         {
             this.Name = Name;
             this.directoryInfo = directoryInfo;
