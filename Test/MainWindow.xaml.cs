@@ -83,21 +83,21 @@ namespace Test
                         lstBoxSavefiles.ItemsSource = segments[lstboxSegments.SelectedIndex].savefiles;
 
                         txboxSavefileName.Text = "";
-                        tblkErrorMessage.Text = "";
+                        tblkNotificationMessage.Text = "";
                     }
                     else
                     {
-                        tblkErrorMessage.Text = "Choose different name.";
+                        tblkNotificationMessage.Text = "Choose different name.";
                     }
                 }
                 else
                 {
-                    tblkErrorMessage.Text = "No segment selected.";
+                    tblkNotificationMessage.Text = "No segment selected.";
                 }              
             }
             else
             {
-                tblkErrorMessage.Text = "Enter savefile name.";
+                tblkNotificationMessage.Text = "Enter savefile name.";
             }
         }
 
@@ -119,16 +119,16 @@ namespace Test
                     Savefile selectedSaveFile = segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
                     ImportSavestate(selectedSaveFile);
 
-                    tblkErrorMessage.Text = "";
+                    tblkNotificationMessage.Text = "";
                 }
                 else
                 {
-                    tblkErrorMessage.Text = "No savefile selected.";
+                    tblkNotificationMessage.Text = "No savefile selected.";
                 }
             }
             else
             {
-                tblkErrorMessage.Text = "No segment selected.";
+                tblkNotificationMessage.Text = "No segment selected.";
             }
            
         }
@@ -188,17 +188,17 @@ namespace Test
                     lstBoxSavefiles.ItemsSource = null;
                     lstBoxSavefiles.ItemsSource = newSegment.savefiles;
 
-                    tblkErrorMessage.Text = "";
+                    tblkNotificationMessage.Text = "";
                     txboxCreateSegment.Text = "";
                 }
                 else
                 {
-                    tblkErrorMessage.Text = "Category already exists.";
+                    tblkNotificationMessage.Text = "Category already exists.";
                 }
             }
             else
             {
-                tblkErrorMessage.Text = "Enter segment name.";
+                tblkNotificationMessage.Text = "Enter segment name.";
             }
         }
 
@@ -225,12 +225,12 @@ namespace Test
                 }
                 else
                 {
-                    tblkErrorMessage.Text = "No Savefile Selected.";
+                    tblkNotificationMessage.Text = "No Savefile Selected.";
                 }
             }
             else
             {
-                tblkErrorMessage.Text = "No Category Selected.";
+                tblkNotificationMessage.Text = "No Category Selected.";
             }
         }
 
@@ -248,7 +248,7 @@ namespace Test
             }
             else
             {
-                tblkErrorMessage.Text = "No savefile selected.";
+                tblkNotificationMessage.Text = "No savefile selected.";
             }
         }
 
@@ -268,7 +268,7 @@ namespace Test
             }
             else
             {
-                tblkErrorMessage.Text = "No category selected.";
+                tblkNotificationMessage.Text = "No category selected.";
             }
 
         }

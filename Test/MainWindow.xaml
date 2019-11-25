@@ -36,7 +36,7 @@
         </Button>
         <TextBox x:Name="txboxSavefileName" HorizontalAlignment="Left" Height="35" Margin="22,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
         <Button x:Name="btnImportSavestate" Content="Import Save" HorizontalAlignment="Left" Margin="267,129,0,0" VerticalAlignment="Top" Width="93" Click="BtnImportSavestate_Click" Height="50" FontFamily="Poor Richard" FontSize="16" Grid.Column="1" FontStyle="Italic" Background="White"/>
-        <TextBlock x:Name="tblkErrorMessage" HorizontalAlignment="Left" Margin="247,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="140" FontSize="18" FontFamily="Poor Richard" FontStyle="Italic" Grid.Column="1" Foreground="Red"/>
+        <TextBlock x:Name="tblkNotificationMessage" HorizontalAlignment="Left" Margin="247,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="140" FontSize="18" FontFamily="Poor Richard" FontStyle="Italic" Grid.Column="1" Foreground="Red"/>
         <ListBox x:Name="lstboxSegments" HorizontalAlignment="Left" Height="250" Margin="160,27,0,0" VerticalAlignment="Top" Width="127" SelectionChanged="LstboxSegments_SelectionChanged" Grid.ColumnSpan="2" Background="White"/>
         <TextBlock x:Name="tblkHeader1" HorizontalAlignment="Left" Margin="179,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Segments" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic" Grid.ColumnSpan="2"/>
         <Button x:Name="btnCreateSegment" Content="Create Segment" HorizontalAlignment="Left" Margin="22,59,0,0" VerticalAlignment="Top" Width="120" Height="35" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateSegment_Click" Background="White" FontStyle="Italic"/>
