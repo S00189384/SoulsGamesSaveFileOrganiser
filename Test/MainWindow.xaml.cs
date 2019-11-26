@@ -21,6 +21,12 @@ namespace Test
     /// </summary>
     public partial class MainWindow : Window
     {
+        enum TypeOfNotificationMessage
+        {
+            Success, //0
+            Error //1
+        }
+
         System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         DirectoryInfo mainFolder;
@@ -83,21 +89,21 @@ namespace Test
                         lstBoxSavefiles.ItemsSource = segments[lstboxSegments.SelectedIndex].savefiles;
 
                         txboxSavefileName.Text = "";
-                        tblkNotificationMessage.Text = "";
+                        UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
                     }
                     else
                     {
-                        tblkNotificationMessage.Text = "Choose different name.";
+                        UpdateNotificationMessage("Savefile with that name already exists.", TypeOfNotificationMessage.Error);
                     }
                 }
                 else
                 {
-                    tblkNotificationMessage.Text = "No segment selected.";
+                    UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
                 }              
             }
             else
             {
-                tblkNotificationMessage.Text = "Enter savefile name.";
+                UpdateNotificationMessage("Enter savefile name.", TypeOfNotificationMessage.Error);
             }
         }
 
@@ -119,16 +125,16 @@ namespace Test
                     Savefile selectedSaveFile = segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
                     ImportSavestate(selectedSaveFile);
 
-                    tblkNotificationMessage.Text = "";
+                    UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
                 }
                 else
                 {
-                    tblkNotificationMessage.Text = "No savefile selected.";
+                    UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
                 }
             }
             else
             {
-                tblkNotificationMessage.Text = "No segment selected.";
+                UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
             }
            
         }
@@ -188,17 +194,17 @@ namespace Test
                     lstBoxSavefiles.ItemsSource = null;
                     lstBoxSavefiles.ItemsSource = newSegment.savefiles;
 
-                    tblkNotificationMessage.Text = "";
+                    UpdateNotificationMessage("Segment created.", TypeOfNotificationMessage.Success);
                     txboxCreateSegment.Text = "";
                 }
                 else
                 {
-                    tblkNotificationMessage.Text = "Category already exists.";
+                    UpdateNotificationMessage("Category already exists.", TypeOfNotificationMessage.Error);
                 }
             }
             else
             {
-                tblkNotificationMessage.Text = "Enter segment name.";
+                UpdateNotificationMessage("Enter segment name.", TypeOfNotificationMessage.Error);
             }
         }
 
@@ -222,15 +228,17 @@ namespace Test
                     Savefile saveFileToUpdate = segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
 
                     CreateSaveFile(saveFileToUpdate);
+                    UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
+
                 }
                 else
                 {
-                    tblkNotificationMessage.Text = "No Savefile Selected.";
+                    UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
                 }
             }
             else
             {
-                tblkNotificationMessage.Text = "No Category Selected.";
+                UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
             }
         }
 
@@ -245,10 +253,12 @@ namespace Test
 
                 lstBoxSavefiles.ItemsSource = null;
                 lstBoxSavefiles.ItemsSource = segments[lstboxSegments.SelectedIndex].savefiles;
+
+                UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
             }
             else
             {
-                tblkNotificationMessage.Text = "No savefile selected.";
+                UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
             }
         }
 
@@ -265,12 +275,38 @@ namespace Test
                 lstboxSegments.ItemsSource = segments;
 
                 lstBoxSavefiles.ItemsSource = null;
+
+                UpdateNotificationMessage("Segment deleted.", TypeOfNotificationMessage.Success);
             }
             else
             {
-                tblkNotificationMessage.Text = "No category selected.";
+                UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
             }
 
+        }
+
+        private async void UpdateNotificationMessage(string message,TypeOfNotificationMessage typeOfMessage)
+        {
+            //If the user presses the same button dont execute code below.
+            if (message == tblkNotificationMessage.Text)
+                return;
+
+            //Update the text and colour.
+            tblkNotificationMessage.Text = message;
+
+            if (typeOfMessage == TypeOfNotificationMessage.Success)
+                tblkNotificationMessage.Foreground = new SolidColorBrush(Colors.Green);
+            else
+                tblkNotificationMessage.Foreground = new SolidColorBrush(Colors.Red);
+
+            //Wait for 3.5 seconds. 
+            await Task.Delay(3500);
+
+            //If the user didn't press another button - i.e the text stays the same then reset the notification message.
+            if (message == tblkNotificationMessage.Text)
+            {
+                tblkNotificationMessage.Text = "";
+            }
         }
     }
 }
