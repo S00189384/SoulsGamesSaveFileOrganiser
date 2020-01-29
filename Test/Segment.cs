@@ -7,22 +7,27 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    class Category
+    class Segment
     {
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }
-        public List<Segment> segments { get; set; }
+        public List<Savefile> savefiles { get; set; }
+        public Category Category { get; set; }
 
-        public Category(string Name, DirectoryInfo directoryInfo)
+        public Segment(string Name,DirectoryInfo directoryInfo,Category Category)
         {
             this.Name = Name;
             this.directoryInfo = directoryInfo;
-            segments = new List<Segment>();
+            this.Category = Category;
+            savefiles = new List<Savefile>();
         }
 
         public override string ToString()
         {
             return string.Format("{0}", Name);
         }
+
+
+
     }
 }
