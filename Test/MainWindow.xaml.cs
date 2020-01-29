@@ -55,7 +55,6 @@ namespace Test
             
             lstboxSegments.ItemsSource = segments;
         }
-
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
             //If text is in text box.
@@ -103,7 +102,6 @@ namespace Test
                 UpdateNotificationMessage("Enter savefile name.", TypeOfNotificationMessage.Error);
             }
         }
-
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
         {
             //If segment is selected.
@@ -135,7 +133,6 @@ namespace Test
             }
            
         }
-
         private void ImportSavestate(Savefile savefile)
         {
             string[] files = System.IO.Directory.GetFiles(savefile.directoryInfo.FullName);
@@ -150,7 +147,6 @@ namespace Test
                 System.IO.File.Copy(nameoffile, destFile, true);
             }
         }
-
         //Gets actual savefile and adds to desired folder.
         private void CreateSaveFile(Savefile savefile)
         {
@@ -167,7 +163,6 @@ namespace Test
                 System.IO.File.Copy(nameoffile, destFile, true);
             }
         }
-
         private void BtnCreateSegment_Click(object sender, RoutedEventArgs e)
         {
             if(txboxCreateSegment.Text != "")
@@ -204,7 +199,6 @@ namespace Test
                 UpdateNotificationMessage("Enter segment name.", TypeOfNotificationMessage.Error);
             }
         }
-
         private void LstboxSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(lstboxSegments.SelectedIndex != -1)
@@ -215,7 +209,6 @@ namespace Test
                 lstBoxSavefiles.ItemsSource = segments[selectedIndex].savefiles;
             }
         }
-
         private void BtnUpdateSave_Click(object sender, RoutedEventArgs e)
         {
             if(lstboxSegments.SelectedIndex != -1)
@@ -238,7 +231,6 @@ namespace Test
                 UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
             }
         }
-
         private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
         {
             if(lstBoxSavefiles.SelectedIndex != -1)
@@ -258,7 +250,6 @@ namespace Test
                 UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
             }
         }
-
         private void BtnDeleteSegment_Click(object sender, RoutedEventArgs e)
         {
             if(lstboxSegments.SelectedIndex != -1)
@@ -281,7 +272,6 @@ namespace Test
             }
 
         }
-
         private async void UpdateNotificationMessage(string message,TypeOfNotificationMessage typeOfMessage)
         {
             //If the user presses the same button dont execute code below.
@@ -305,69 +295,56 @@ namespace Test
                 tblkNotificationMessage.Text = "";
             }
         }
-
         private void HideButtonDescription()
         {
             tblkButtonDescription.Text = "";
         }
-
         //Button mouse over / exit - shows and hides description of what button does.
         private void BtnCreateSegment_MouseEnter(object sender, MouseEventArgs e)
         {
             tblkButtonDescription.Text = "Creates segment where savefiles can be added.";
         }
-
         private void BtnCreateSegment_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
 
         }
-
         private void BtnCreateSavefile_MouseEnter(object sender, MouseEventArgs e)
         {
             tblkButtonDescription.Text = "Creates savefile based on current savestates in game.";
         }
-
         private void BtnCreateSavefile_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
         }
-
         private void BtnDeleteSegment_MouseEnter(object sender, MouseEventArgs e)
         {
             tblkButtonDescription.Text = "Delete selected segment and all of its savefiles.";
         }
-
         private void BtnDeleteSegment_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
         }
-
         private void BtnDeleteSavefile1_MouseEnter(object sender, MouseEventArgs e)
         {
             tblkButtonDescription.Text = "Delete selected savefile.";
         }
-
         private void BtnDeleteSavefile1_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
         }
-
         private void BtnImportSavestate_MouseEnter(object sender, MouseEventArgs e)
         {
             tblkButtonDescription.Text = "Overites save in game to selected savefile.";
         }
-
         private void BtnImportSavestate_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
         }
-
         private void BtnUpdateSave_MouseEnter(object sender, MouseEventArgs e)
         {
             tblkButtonDescription.Text = "Updates selected savefile to savefile in game.";
         }
-
         private void BtnUpdateSave_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
