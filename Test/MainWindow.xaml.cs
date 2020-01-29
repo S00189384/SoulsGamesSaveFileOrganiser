@@ -25,27 +25,30 @@ namespace Test
         }
 
         //System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
-        System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\s00189384\Desktop\SaveFileLocation");
+        //System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\FakeSaveFileLocation");
+        System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         DirectoryInfo mainFolder;
-        List<Segment> segments;
-        List<Category> categories;
+        List<Category> categoryList = new List<Category>();
 
         public MainWindow()
         {
             InitializeComponent();
+            mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Demon's Souls Savefiles");
 
-            segments = new List<Segment>();
-            categories = new List<Category>();
+            ImportCreatedSavefiles();
+            RefreshListBox<Category>(lstBoxCategories, categoryList);
+        }
 
-            mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Savefiles");
-
+        //Start
+        private void ImportCreatedSavefiles()
+        {
             //Categories.
             string[] categoriesInMainFolder = System.IO.Directory.GetDirectories(mainFolder.FullName);
             for (int c = 0; c < categoriesInMainFolder.Length; c++)
             {
                 Category currentCategory = new Category(System.IO.Path.GetFileName(categoriesInMainFolder[c]), new DirectoryInfo(categoriesInMainFolder[c]));
-                categories.Add(currentCategory);
+                categoryList.Add(currentCategory);
 
                 //Segments in each category.
                 string[] segmentsInCategory = System.IO.Directory.GetDirectories(currentCategory.directoryInfo.FullName);
@@ -63,135 +66,220 @@ namespace Test
                     }
                 }
             }
-
-            lstBoxCategories.ItemsSource = categories;
-
         }
-
-
 
         //Categories.
         private void LstBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int selectedCategoryIndex = lstBoxCategories.SelectedIndex;
-
-            if (selectedCategoryIndex != -1)
+            if (lstBoxCategories.SelectedIndex != -1)
             {
-                lstboxSegments.ItemsSource = null;
-                lstboxSegments.ItemsSource = categories[selectedCategoryIndex].segments;
+                RefreshListBox<Savefile>(lstBoxSavefiles, null);
+                RefreshListBox<Segment>(lstboxSegments, GetSelectedCategory().segments);
+            }
+        }
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+            string nameOfCategoryToCreate = txboxCreateCategory.Text;
+
+            if(nameOfCategoryToCreate != "")
+            {
+                bool CategoryAlreadyExists = false;
+
+                foreach (Category category in categoryList)
+                {
+                    if (category.Name == nameOfCategoryToCreate)
+                        CategoryAlreadyExists = true;
+                }
+
+                if(!CategoryAlreadyExists)
+                {
+                    categoryList.Add(new Category(nameOfCategoryToCreate, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + nameOfCategoryToCreate)));
+                    RefreshListBox<Category>(lstBoxCategories, categoryList);
+
+                    UpdateNotificationMessage("Category added.", TypeOfNotificationMessage.Success);
+                    UpdateTextBox(txboxCreateCategory, "");
+                }
+                else
+                {
+                    UpdateNotificationMessage("Category already exists.", TypeOfNotificationMessage.Error);
+                }           
+            }
+            else
+            {
+                UpdateNotificationMessage("No category name entered.", TypeOfNotificationMessage.Error);
+            }
+        }
+        private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if(lstBoxCategories.SelectedIndex != -1)
+            {
+                Category categoryToDelete = categoryList[lstBoxCategories.SelectedIndex];
+                System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName,true);
+                categoryList.Remove(categoryToDelete);
+
+                RefreshListBox<Category>(lstBoxCategories, categoryList);
+                RefreshListBox<Segment>(lstboxSegments, null);
+                RefreshListBox<Savefile>(lstBoxSavefiles, null);
+
+                UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
+            }
+            else
+            {
+                UpdateNotificationMessage("No category selected", TypeOfNotificationMessage.Error);
             }
         }
 
         //Segments.
-        //Fix.
         private void BtnCreateSegment_Click(object sender, RoutedEventArgs e)
         {
-            //if (txboxCreateSegment.Text != "")
-            //{
-            //    bool SegmentAlreadyExists = false;
-            //    Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + txboxCreateSegment.Text));
+            if (txboxCreateSegment.Text != "")
+            {
+                if(lstBoxCategories.SelectedIndex != -1)
+                {
+                    Category selectedCategory = GetSelectedCategory();
+                    Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text),selectedCategory);
 
-            //    foreach (Segment segment in segments)
-            //    {
-            //        if (segment.Name == newSegment.Name)
-            //            SegmentAlreadyExists = true;
-            //    }
+                    bool SegmentAlreadyExists = false;
+                    foreach (Segment segment in selectedCategory.segments)
+                    {
+                        if (segment.Name == newSegment.Name)
+                            SegmentAlreadyExists = true;
+                    }
 
-            //    if (!SegmentAlreadyExists)
-            //    {
-            //        segments.Add(newSegment);
-
-            //        lstboxSegments.ItemsSource = null;
-            //        lstboxSegments.ItemsSource = segments;
-
-            //        lstBoxSavefiles.ItemsSource = null;
-            //        lstBoxSavefiles.ItemsSource = newSegment.savefiles;
-
-            //        UpdateNotificationMessage("Segment created.", TypeOfNotificationMessage.Success);
-            //        txboxCreateSegment.Text = "";
-            //    }
-            //    else
-            //    {
-            //        UpdateNotificationMessage("Category already exists.", TypeOfNotificationMessage.Error);
-            //    }
-            //}
-            //else
-            //{
-            //    UpdateNotificationMessage("Enter segment name.", TypeOfNotificationMessage.Error);
-            //}
+                    if (!SegmentAlreadyExists)
+                    {
+                        selectedCategory.segments.Add(newSegment);
+                  
+                        RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
+                        RefreshListBox<Savefile>(lstBoxSavefiles, newSegment.savefiles);
+                        UpdateTextBox(txboxCreateSegment, "");
+                        UpdateNotificationMessage("Segment created.", TypeOfNotificationMessage.Success);
+                    }
+                    else
+                    {
+                        UpdateNotificationMessage("Category already exists.", TypeOfNotificationMessage.Error);
+                    }
+                }
+                else
+                {
+                    UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
+                }
+            }
+            else
+            {
+                UpdateNotificationMessage("Enter segment name.", TypeOfNotificationMessage.Error);
+            }
         }
-
-
-        //Fix next
         private void LstboxSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(lstboxSegments.SelectedIndex != -1)
             {
-                int selectedIndex = lstboxSegments.SelectedIndex;
-
-                lstBoxSavefiles.ItemsSource = null;
-                lstBoxSavefiles.ItemsSource = segments[selectedIndex].savefiles;
+                RefreshListBox<Savefile>(lstBoxSavefiles, GetSelectedSegment().savefiles);
             }
         }
         private void BtnDeleteSegment_Click(object sender, RoutedEventArgs e)
         {
-            if (lstboxSegments.SelectedIndex != -1)
+            if (lstBoxCategories.SelectedIndex != -1)
             {
-                Segment segmentToDelete = segments[lstboxSegments.SelectedIndex];
-                segments.Remove(segmentToDelete);
+                if(lstboxSegments.SelectedIndex != -1)
+                {
+                    Category selectedCategory = GetSelectedCategory();
+                    Segment segmentToDelete = GetSelectedSegment();
 
-                System.IO.Directory.Delete(segmentToDelete.directoryInfo.FullName, true);
+                    System.IO.Directory.Delete(segmentToDelete.directoryInfo.FullName, true);
+                    selectedCategory.segments.Remove(segmentToDelete);
 
-                lstboxSegments.ItemsSource = null;
-                lstboxSegments.ItemsSource = segments;
-
-                lstBoxSavefiles.ItemsSource = null;
-
-                UpdateNotificationMessage("Segment deleted.", TypeOfNotificationMessage.Success);
+                    RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
+                    RefreshListBox<Savefile>(lstBoxSavefiles, null);
+                    UpdateNotificationMessage("Segment deleted.", TypeOfNotificationMessage.Success);
+                }
+                else
+                {
+                    UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
+                }             
             }
             else
             {
-                UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
+                UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
             }
-
         }
 
-        //Saves.
+        //Saves. 
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
             //If text is in text box.
             if (txboxSavefileName.Text != "")
             {
-                //If category is selected.
-                if (lstboxSegments.SelectedIndex != -1)
+                if(lstBoxCategories.SelectedIndex != -1)
                 {
-                    //Checking if savefile with same name already exists in that category.
-                    bool SaveFileAlreadyExists = false;
-                    foreach (Savefile savefile in segments[lstboxSegments.SelectedIndex].savefiles)
+                    //If segment is selected.
+                    if (lstboxSegments.SelectedIndex != -1)
                     {
-                        if (savefile.Name == txboxSavefileName.Text)
-                            SaveFileAlreadyExists = true;
-                    }
+                        Segment selectedSegment = GetSelectedSegment();
 
-                    if (!SaveFileAlreadyExists)
-                    {
-                        //Create savefile and add to selected categories list of savefiles.
-                        Savefile newSaveFile = new Savefile
-                        (txboxSavefileName.Text, System.IO.Directory.CreateDirectory(segments[lstboxSegments.SelectedIndex].directoryInfo.FullName + "\\" + txboxSavefileName.Text),
-                        segments[lstboxSegments.SelectedIndex]);
-                        segments[lstboxSegments.SelectedIndex].savefiles.Add(newSaveFile);
+                        //Checking if savefile with same name already exists in that category.
+                        bool SaveFileAlreadyExists = false;
+                        foreach (Savefile savefile in selectedSegment.savefiles)
+                        {
+                            if (savefile.Name == txboxSavefileName.Text)
+                                SaveFileAlreadyExists = true;
+                        }
 
-                        CreateSaveFile(newSaveFile);
+                        if (!SaveFileAlreadyExists)
+                        {
+                            //Create savefile and add to selected categories list of savefiles.
+                            Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.directoryInfo.FullName + "\\" + txboxSavefileName.Text),selectedSegment);
+                            selectedSegment.savefiles.Add(newSaveFile);
 
-                        lstBoxSavefiles.ItemsSource = null;
-                        lstBoxSavefiles.ItemsSource = segments[lstboxSegments.SelectedIndex].savefiles;
+                            CreateSaveFile(newSaveFile);
 
-                        txboxSavefileName.Text = "";
-                        UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
+                            RefreshListBox<Savefile>(lstBoxSavefiles,selectedSegment.savefiles);
+                            UpdateTextBox(txboxSavefileName, "");
+                            UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
+                        }
+                        else
+                        {
+                            UpdateNotificationMessage("Savefile with that name already exists.", TypeOfNotificationMessage.Error);
+                        }
                     }
                     else
                     {
-                        UpdateNotificationMessage("Savefile with that name already exists.", TypeOfNotificationMessage.Error);
+                        UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
+                    }
+                }
+                else
+                {
+                    UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
+                }        
+            }
+            else
+            {
+                UpdateNotificationMessage("Enter savefile name.", TypeOfNotificationMessage.Error);
+            }
+        }
+        private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstBoxCategories.SelectedIndex != -1)
+            {
+                //If segment is selected.
+                if (lstboxSegments.SelectedIndex != -1)
+                {
+                    //If save file is selected.
+                    if (lstBoxSavefiles.SelectedIndex != -1)
+                    {
+                        //Delete files in actual savefile location.
+                        foreach (FileInfo file in saveFileLocation.GetFiles())
+                        {
+                            file.Delete();
+                        }
+
+                        //Add new savefile.
+                        ImportSavestate(GetSelectedSavefile());
+                        UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
+                    }
+                    else
+                    {
+                        UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
                     }
                 }
                 else
@@ -201,39 +289,8 @@ namespace Test
             }
             else
             {
-                UpdateNotificationMessage("Enter savefile name.", TypeOfNotificationMessage.Error);
-            }
-        }
-        private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
-        {
-            //If segment is selected.
-            if (lstboxSegments.SelectedIndex != -1)
-            {
-                //If save file is selected.
-                if (lstBoxSavefiles.SelectedIndex != -1)
-                {
-                    //Delete files in actual savefile location.
-                    foreach (FileInfo file in saveFileLocation.GetFiles())
-                    {
-                        file.Delete();
-                    }
-
-                    //Add new savefile.
-                    Savefile selectedSaveFile = segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
-                    ImportSavestate(selectedSaveFile);
-
-                    UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
-                }
-                else
-                {
-                    UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
-                }
-            }
-            else
-            {
-                UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
-            }
-
+                UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
+            }        
         }
         private void ImportSavestate(Savefile savefile)
         {
@@ -249,7 +306,6 @@ namespace Test
                 System.IO.File.Copy(nameoffile, destFile, true);
             }
         }
-        //Gets actual savefile and adds to desired folder.
         private void CreateSaveFile(Savefile savefile)
         {
             string[] files = System.IO.Directory.GetFiles(saveFileLocation.FullName);
@@ -267,44 +323,62 @@ namespace Test
         }
         private void BtnUpdateSave_Click(object sender, RoutedEventArgs e)
         {
-            if(lstboxSegments.SelectedIndex != -1)
+            if(lstBoxCategories.SelectedIndex != -1)
             {
-                if (lstBoxSavefiles.SelectedIndex != -1)
+                if (lstboxSegments.SelectedIndex != -1)
                 {
-                    Savefile saveFileToUpdate = segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
-
-                    CreateSaveFile(saveFileToUpdate);
-                    UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
-
+                    //Update Save.
+                    if (lstBoxSavefiles.SelectedIndex != -1)
+                    {
+                        CreateSaveFile(GetSelectedSavefile());
+                        UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
+                    }
+                    else
+                    {
+                        UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
+                    }
                 }
                 else
                 {
-                    UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
+                    UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
                 }
             }
             else
             {
-                UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
-            }
+                UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
+            }         
         }
+
         private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
         {
-            if(lstBoxSavefiles.SelectedIndex != -1)
+            if (lstBoxSavefiles.SelectedIndex != -1)
             {
-                Savefile savefile = segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+                Savefile selectedSavefile = GetSelectedSavefile();
 
-                System.IO.Directory.Delete(savefile.directoryInfo.FullName, true);
-                segments[lstboxSegments.SelectedIndex].savefiles.Remove(savefile);
+                System.IO.Directory.Delete(selectedSavefile.directoryInfo.FullName, true);
+                GetSelectedSegment().savefiles.Remove(selectedSavefile);
 
-                lstBoxSavefiles.ItemsSource = null;
-                lstBoxSavefiles.ItemsSource = segments[lstboxSegments.SelectedIndex].savefiles;
-
+                RefreshListBox<Savefile>(lstBoxSavefiles, GetSelectedSegment().savefiles);
                 UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
             }
             else
             {
                 UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
             }
+        }
+
+        //Getting selected savefiles, segments, categories.
+        private Savefile GetSelectedSavefile()
+        {
+            return categoryList[lstBoxCategories.SelectedIndex].segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+        }
+        private Segment GetSelectedSegment()
+        {
+            return categoryList[lstBoxCategories.SelectedIndex].segments[lstboxSegments.SelectedIndex];
+        }
+        private Category GetSelectedCategory()
+        {
+            return categoryList[lstBoxCategories.SelectedIndex];
         }
 
         //Notifications / Descriptions.
@@ -327,9 +401,8 @@ namespace Test
 
             //If the user didn't press another button - i.e the text stays the same then reset the notification message.
             if (message == tblkNotificationMessage.Text)
-            {
                 tblkNotificationMessage.Text = "";
-            }
+
         }
         private void HideButtonDescription()
         {
@@ -384,6 +457,22 @@ namespace Test
         private void BtnUpdateSave_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
+        }
+
+        //General
+        private void UpdateTextBlock(TextBlock textBlock,string message)
+        {
+            textBlock.Text = message;
+        }
+        private void UpdateTextBox(TextBox textBox, string message)
+        {
+            textBox.Text = message;
+        }
+        private void RefreshListBox<T>(ListBox listBoxToRefresh,List<T> listToShow)
+        {
+            listBoxToRefresh.ItemsSource = null;
+            listBoxToRefresh.ItemsSource = listToShow;
+
         }
     }
 }
