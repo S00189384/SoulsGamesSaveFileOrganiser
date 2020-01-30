@@ -274,7 +274,6 @@ namespace Test
                 UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
             }         
         }
-
         private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
         {
             if (lstBoxSavefiles.SelectedIndex != -1)
@@ -310,7 +309,6 @@ namespace Test
         {
             return listBoxContainingItem.SelectedItem.GetType().ToString();
         }
-
 
         //Notifications / Descriptions.
         private async void UpdateNotificationMessage(string message,TypeOfNotificationMessage typeOfMessage)
@@ -458,11 +456,6 @@ namespace Test
                     return false;
                 }
 
-                else if (lstboxSegments.SelectedIndex == -1)
-                {
-                    UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
-                    return false;
-                }
                 else
                     return true;
             }
@@ -479,16 +472,10 @@ namespace Test
                     UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
                     return false;
                 }
-                else if (lstBoxSavefiles.SelectedIndex == -1)
-                {
-                    UpdateNotificationMessage("No Savefile Selected", TypeOfNotificationMessage.Error);
-                    return false;
-                }
                 else
                     return true;
             }
 
-            //Passing all checks
             return true;
         }
     }
