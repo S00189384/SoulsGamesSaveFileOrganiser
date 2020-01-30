@@ -9,6 +9,7 @@ namespace Test
 {
     class Segment
     {
+        public static string ClassName = "Segment";
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }
         public List<Savefile> savefiles { get; set; }
@@ -26,8 +27,5 @@ namespace Test
         {
             return string.Format("{0}", Name);
         }
-
-
-
     }
 }

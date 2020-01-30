@@ -79,48 +79,32 @@ namespace Test
         }
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
+            if (!UserCanCreateObject(typeof(Category), lstBoxCategories, txboxCreateCategory))
+                return;
+
+            //Create category and folder.
             string nameOfCategoryToCreate = txboxCreateCategory.Text;
+            categoryList.Add(new Category(nameOfCategoryToCreate, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + nameOfCategoryToCreate)));
 
-            if(nameOfCategoryToCreate != "")
-            {
-                bool CategoryAlreadyExists = false;
-
-                foreach (Category category in categoryList)
-                {
-                    if (category.Name == nameOfCategoryToCreate)
-                        CategoryAlreadyExists = true;
-                }
-
-                if(!CategoryAlreadyExists)
-                {
-                    categoryList.Add(new Category(nameOfCategoryToCreate, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + nameOfCategoryToCreate)));
-                    RefreshListBox<Category>(lstBoxCategories, categoryList);
-
-                    UpdateNotificationMessage("Category added.", TypeOfNotificationMessage.Success);
-                    UpdateTextBox(txboxCreateCategory, "");
-                }
-                else
-                {
-                    UpdateNotificationMessage("Category already exists.", TypeOfNotificationMessage.Error);
-                }           
-            }
-            else
-            {
-                UpdateNotificationMessage("No category name entered.", TypeOfNotificationMessage.Error);
-            }
+            //Update window.
+            RefreshListBox<Category>(lstBoxCategories, categoryList);
+            UpdateNotificationMessage("Category added.", TypeOfNotificationMessage.Success);
+            UpdateTextBox(txboxCreateCategory, "");
         }
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
             if(lstBoxCategories.SelectedIndex != -1)
             {
+                //Delete Category and Folder with all its content.
                 Category categoryToDelete = categoryList[lstBoxCategories.SelectedIndex];
                 System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName,true);
                 categoryList.Remove(categoryToDelete);
+                categoryToDelete = null;
 
+                //Update window.
                 RefreshListBox<Category>(lstBoxCategories, categoryList);
                 RefreshListBox<Segment>(lstboxSegments, null);
                 RefreshListBox<Savefile>(lstBoxSavefiles, null);
-
                 UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
             }
             else
@@ -132,43 +116,21 @@ namespace Test
         //Segments.
         private void BtnCreateSegment_Click(object sender, RoutedEventArgs e)
         {
-            if (txboxCreateSegment.Text != "")
-            {
-                if(lstBoxCategories.SelectedIndex != -1)
-                {
-                    Category selectedCategory = GetSelectedCategory();
-                    Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text),selectedCategory);
+            if (!UserCanCreateObject(typeof(Segment), lstboxSegments, txboxCreateSegment))
+                return;
 
-                    bool SegmentAlreadyExists = false;
-                    foreach (Segment segment in selectedCategory.segments)
-                    {
-                        if (segment.Name == newSegment.Name)
-                            SegmentAlreadyExists = true;
-                    }
-
-                    if (!SegmentAlreadyExists)
-                    {
-                        selectedCategory.segments.Add(newSegment);
+            //Create new segment and folder.
+            Category selectedCategory = GetSelectedCategory();
+            Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text),selectedCategory);
+            selectedCategory.segments.Add(newSegment);
                   
-                        RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
-                        RefreshListBox<Savefile>(lstBoxSavefiles, newSegment.savefiles);
-                        UpdateTextBox(txboxCreateSegment, "");
-                        UpdateNotificationMessage("Segment created.", TypeOfNotificationMessage.Success);
-                    }
-                    else
-                    {
-                        UpdateNotificationMessage("Category already exists.", TypeOfNotificationMessage.Error);
-                    }
-                }
-                else
-                {
-                    UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
-                }
-            }
-            else
-            {
-                UpdateNotificationMessage("Enter segment name.", TypeOfNotificationMessage.Error);
-            }
+            //Update window.
+            RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
+            RefreshListBox<Savefile>(lstBoxSavefiles, newSegment.savefiles);
+            UpdateTextBox(txboxCreateSegment, "");
+            UpdateNotificationMessage("Segment created.", TypeOfNotificationMessage.Success);
+
+              
         }
         private void LstboxSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -207,55 +169,19 @@ namespace Test
         //Saves. 
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
-            //If text is in text box.
-            if (txboxSavefileName.Text != "")
-            {
-                if(lstBoxCategories.SelectedIndex != -1)
-                {
-                    //If segment is selected.
-                    if (lstboxSegments.SelectedIndex != -1)
-                    {
-                        Segment selectedSegment = GetSelectedSegment();
+            if (!UserCanCreateObject(typeof(Savefile), lstBoxSavefiles, txboxSavefileName))
+                return;
+ 
+            //Create savefile and folder.
+            Segment selectedSegment = GetSelectedSegment();
+            Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.directoryInfo.FullName + "\\" + txboxSavefileName.Text),selectedSegment);
+            selectedSegment.savefiles.Add(newSaveFile);
+            CreateSaveFile(newSaveFile);
 
-                        //Checking if savefile with same name already exists in that category.
-                        bool SaveFileAlreadyExists = false;
-                        foreach (Savefile savefile in selectedSegment.savefiles)
-                        {
-                            if (savefile.Name == txboxSavefileName.Text)
-                                SaveFileAlreadyExists = true;
-                        }
-
-                        if (!SaveFileAlreadyExists)
-                        {
-                            //Create savefile and add to selected categories list of savefiles.
-                            Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.directoryInfo.FullName + "\\" + txboxSavefileName.Text),selectedSegment);
-                            selectedSegment.savefiles.Add(newSaveFile);
-
-                            CreateSaveFile(newSaveFile);
-
-                            RefreshListBox<Savefile>(lstBoxSavefiles,selectedSegment.savefiles);
-                            UpdateTextBox(txboxSavefileName, "");
-                            UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
-                        }
-                        else
-                        {
-                            UpdateNotificationMessage("Savefile with that name already exists.", TypeOfNotificationMessage.Error);
-                        }
-                    }
-                    else
-                    {
-                        UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
-                    }
-                }
-                else
-                {
-                    UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
-                }        
-            }
-            else
-            {
-                UpdateNotificationMessage("Enter savefile name.", TypeOfNotificationMessage.Error);
-            }
+            //Update Window.
+            RefreshListBox<Savefile>(lstBoxSavefiles,selectedSegment.savefiles);
+            UpdateTextBox(txboxSavefileName, "");
+            UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
         }
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
         {
@@ -380,6 +306,11 @@ namespace Test
         {
             return categoryList[lstBoxCategories.SelectedIndex];
         }
+        private string GetSelectedItemName(Type typeOfObject, ListBox listBoxContainingItem)
+        {
+            return listBoxContainingItem.SelectedItem.GetType().ToString();
+        }
+
 
         //Notifications / Descriptions.
         private async void UpdateNotificationMessage(string message,TypeOfNotificationMessage typeOfMessage)
@@ -472,7 +403,93 @@ namespace Test
         {
             listBoxToRefresh.ItemsSource = null;
             listBoxToRefresh.ItemsSource = listToShow;
+        }
+        private bool UserCanCreateObject(Type typeOfObject, ListBox listBoxToAddObjectTo, TextBox textBoxWithObjectName)
+        {
+            //Check if text box has name for object.
+            if (textBoxWithObjectName.Text == "")
+            {
+                UpdateNotificationMessage("Enter " + typeOfObject.Name + " Name.", TypeOfNotificationMessage.Error);
+                return false;
+            }
 
+            //Check if right items are selected in list boxes to create object.
+
+            if (!ListboxHasItemSelected(listBoxToAddObjectTo))
+                return false;
+
+            //Check if object with same name already exists.
+            if (listBoxToAddObjectTo.ItemsSource != null)
+            {
+                string nameOfObjectToCreate = textBoxWithObjectName.Text;
+
+                foreach (object listItem in listBoxToAddObjectTo.ItemsSource)
+                {
+                    if (listItem.ToString() == nameOfObjectToCreate)
+                    {
+                        UpdateTextBox(textBoxWithObjectName, "");
+                        UpdateNotificationMessage(typeOfObject.Name + " With Same Name Already Exists", TypeOfNotificationMessage.Error);
+                        return false;
+                    }
+                }
+            }
+
+            //If all checks are successfull return true.
+            return true;
+        }
+        private bool ListboxHasItemSelected(ListBox listBoxToCheck)
+        {
+            if(listBoxToCheck == lstBoxCategories)
+            {
+                if (lstBoxCategories.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
+                else
+                    return true;                        
+            }
+
+            else if (listBoxToCheck == lstboxSegments)
+            {
+                if (lstBoxCategories.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
+
+                else if (lstboxSegments.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
+                else
+                    return true;
+            }
+
+            else if(listBoxToCheck == lstBoxSavefiles)
+            {
+                if (lstBoxCategories.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
+                else if (lstboxSegments.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
+                else if (lstBoxSavefiles.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Savefile Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
+                else
+                    return true;
+            }
+
+            //Passing all checks
+            return true;
         }
     }
 }

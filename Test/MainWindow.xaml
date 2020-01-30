@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="DeS Emulator Save File Organiser" Height="378.356" Width="806.051">
-    <Grid Margin="0,0,0,-1" RenderTransformOrigin="0.5,0.5">
+        Title="DeS Emulator Save File Organiser" Height="378.356" Width="765.051">
+    <Grid Margin="0,0,-6,-1" RenderTransformOrigin="0.5,0.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -34,13 +34,13 @@
             </Button.RenderTransform>
         </Button>
         <TextBox x:Name="txboxSavefileName" HorizontalAlignment="Left" Height="35" Margin="159,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
-        <Button x:Name="btnImportSavestate" Content="Import Save" HorizontalAlignment="Left" Margin="654,87,0,0" VerticalAlignment="Top" Width="93" Click="BtnImportSavestate_Click" Height="50" FontFamily="Poor Richard" FontSize="16" FontStyle="Italic" Background="White" MouseEnter="BtnImportSavestate_MouseEnter" MouseLeave="BtnImportSavestate_MouseLeave"/>
-        <TextBlock x:Name="tblkNotificationMessage" HorizontalAlignment="Left" Margin="627,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="45" Width="140" FontSize="18" FontFamily="Poor Richard" FontStyle="Italic" Foreground="Red"/>
+        <Button x:Name="btnImportSavestate" Content="Import Save" HorizontalAlignment="Left" Margin="630,176,0,0" VerticalAlignment="Top" Width="93" Click="BtnImportSavestate_Click" Height="50" FontFamily="Poor Richard" FontSize="16" FontStyle="Italic" Background="White" MouseEnter="BtnImportSavestate_MouseEnter" MouseLeave="BtnImportSavestate_MouseLeave"/>
+        <TextBlock x:Name="tblkNotificationMessage" HorizontalAlignment="Left" Margin="605,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="96" Width="148" FontSize="18" FontFamily="Poor Richard" FontStyle="Italic" Foreground="Red"/>
         <ListBox x:Name="lstboxSegments" HorizontalAlignment="Left" Height="250" Margin="311,27,0,0" VerticalAlignment="Top" Width="127" SelectionChanged="LstboxSegments_SelectionChanged" Background="White"/>
         <TextBlock x:Name="tblkHeader1" HorizontalAlignment="Left" Margin="328,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Segments" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
         <Button x:Name="btnCreateSegment" Content="Create Segment" HorizontalAlignment="Left" Margin="159,176,0,0" VerticalAlignment="Top" Width="120" Height="35" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateSegment_Click" Background="White" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
         <TextBox x:Name="txboxCreateSegment" HorizontalAlignment="Left" Height="35" Margin="159,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
-        <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="654,161,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click" Background="White" FontStyle="Italic" MouseEnter="BtnUpdateSave_MouseEnter" MouseLeave="BtnUpdateSave_MouseLeave"/>
+        <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="630,236,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click" Background="White" FontStyle="Italic" MouseEnter="BtnUpdateSave_MouseEnter" MouseLeave="BtnUpdateSave_MouseLeave"/>
         <Button x:Name="btnDeleteSegment" Content="Delete Segment" HorizontalAlignment="Left" Margin="318,283,0,0" VerticalAlignment="Top" Width="120" FontFamily="Poor Richard" FontSize="18" Click="BtnDeleteSegment_Click" Background="White" FontStyle="Italic" Height="35" MouseEnter="BtnDeleteSegment_MouseEnter" MouseLeave="BtnDeleteSegment_MouseLeave"/>
         <Button x:Name="btnDeleteSavefile1" Content="Delete Savefile" HorizontalAlignment="Left" Margin="475,282,0,0" VerticalAlignment="Top" Width="122" FontFamily="Poor Richard" Height="35" FontSize="18" Click="BtnDeleteSavefile1_Click" Background="White" FontStyle="Italic" MouseEnter="BtnDeleteSavefile1_MouseEnter" MouseLeave="BtnDeleteSavefile1_MouseLeave"/>
         <TextBlock x:Name="tblkButtonDescription" HorizontalAlignment="Left" Margin="292,323,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="18" Width="343" FontFamily="Poor Richard" FontSize="16" TextDecorations="{x:Null}"/>
