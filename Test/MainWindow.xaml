@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="DeS Emulator Save File Organiser" Height="385.356" Width="765.051">
+        Title="DeS Emulator Save File Organiser" Height="466.356" Width="784.051">
     <Grid Margin="0,0,-6,-1" RenderTransformOrigin="0.5,0.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -17,13 +17,13 @@
             <TransformGroup>
                 <ScaleTransform/>
                 <SkewTransform/>
-                <RotateTransform Angle="-0.105"/>
+                <RotateTransform Angle="0.017"/>
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <ListBox x:Name="lstBoxSavefiles" HorizontalAlignment="Left" Height="250" Margin="467,27,0,0" VerticalAlignment="Top" Width="138" BorderBrush="{x:Null}" Foreground="Black"/>
-        <TextBlock x:Name="tblkHeader2" HorizontalAlignment="Left" Margin="488,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Text="Save Files" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
-        <Button x:Name="btnCreateSavefile" Content="Create Savefile" HorizontalAlignment="Left" Margin="159,261,0,0" VerticalAlignment="Top" Width="120" Click="BtnCreateSavefile_Click" Height="35" FontFamily="Poor Richard" FontStyle="Italic" FontSize="18" RenderTransformOrigin="0.5,0.5" Background="White" MouseEnter="BtnCreateSavefile_MouseEnter" MouseLeave="BtnCreateSavefile_MouseLeave">
+        <ListBox x:Name="lstBoxSavefiles" HorizontalAlignment="Left" Height="250" Margin="451,67,0,0" VerticalAlignment="Top" Width="138" BorderBrush="{x:Null}" Foreground="Black"/>
+        <TextBlock x:Name="tblkHeader2" HorizontalAlignment="Left" Margin="472,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Text="Save Files" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
+        <Button x:Name="btnCreateSavefile" Content="Create " HorizontalAlignment="Left" Margin="448,363,0,0" VerticalAlignment="Top" Width="66" Click="BtnCreateSavefile_Click" Height="24" FontFamily="Poor Richard" FontStyle="Italic" FontSize="18" RenderTransformOrigin="0.5,0.5" Background="#FF06FF27" MouseEnter="BtnCreateSavefile_MouseEnter" MouseLeave="BtnCreateSavefile_MouseLeave">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -33,23 +33,22 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <TextBox x:Name="txboxSavefileName" HorizontalAlignment="Left" Height="35" Margin="159,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
-        <Button x:Name="btnImportSavestate" Content="Import Save" HorizontalAlignment="Left" Margin="630,176,0,0" VerticalAlignment="Top" Width="93" Click="BtnImportSavestate_Click" Height="50" FontFamily="Poor Richard" FontSize="16" FontStyle="Italic" Background="White" MouseEnter="BtnImportSavestate_MouseEnter" MouseLeave="BtnImportSavestate_MouseLeave"/>
-        <TextBlock x:Name="tblkNotificationMessage" HorizontalAlignment="Left" Margin="605,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="96" Width="148" FontSize="18" FontFamily="Poor Richard" FontStyle="Italic" Foreground="Red"/>
-        <ListBox x:Name="lstboxSegments" HorizontalAlignment="Left" Height="250" Margin="311,27,0,0" VerticalAlignment="Top" Width="127" SelectionChanged="LstboxSegments_SelectionChanged" Background="White"/>
-        <TextBlock x:Name="tblkHeader1" HorizontalAlignment="Left" Margin="328,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Segments" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
-        <Button x:Name="btnCreateSegment" Content="Create Segment" HorizontalAlignment="Left" Margin="159,176,0,0" VerticalAlignment="Top" Width="120" Height="35" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateSegment_Click" Background="White" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
-        <TextBox x:Name="txboxCreateSegment" HorizontalAlignment="Left" Height="35" Margin="159,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
-        <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="630,236,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click" Background="White" FontStyle="Italic" MouseEnter="BtnUpdateSave_MouseEnter" MouseLeave="BtnUpdateSave_MouseLeave"/>
-        <Button x:Name="btnDeleteSegment" Content="Delete Segment" HorizontalAlignment="Left" Margin="318,283,0,0" VerticalAlignment="Top" Width="120" FontFamily="Poor Richard" FontSize="18" Click="BtnDeleteSegment_Click" Background="White" FontStyle="Italic" Height="35" MouseEnter="BtnDeleteSegment_MouseEnter" MouseLeave="BtnDeleteSegment_MouseLeave"/>
-        <Button x:Name="btnDeleteSavefile1" Content="Delete Savefile" HorizontalAlignment="Left" Margin="475,282,0,0" VerticalAlignment="Top" Width="122" FontFamily="Poor Richard" Height="35" FontSize="18" Click="BtnDeleteSavefile1_Click" Background="White" FontStyle="Italic" MouseEnter="BtnDeleteSavefile1_MouseEnter" MouseLeave="BtnDeleteSavefile1_MouseLeave"/>
-        <TextBlock x:Name="tblkButtonDescription" HorizontalAlignment="Left" Margin="292,323,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="18" Width="343" FontFamily="Poor Richard" FontSize="16" TextDecorations="{x:Null}"/>
-        <ListBox x:Name="lstBoxCategories" HorizontalAlignment="Left" Height="86" Margin="-148,125,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black" SelectionChanged="LstBoxCategories_SelectionChanged" RenderTransformOrigin="0.493,0.329"/>
-        <TextBlock x:Name="tblkHeader3" HorizontalAlignment="Left" Margin="69,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Category" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
-        <Button x:Name="btnCreateCategory" Content="Create" HorizontalAlignment="Left" Margin="117,102,0,0" VerticalAlignment="Top" Width="69" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click" Background="#FF44D43D" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
-        <TextBox x:Name="txboxCreateCategory" HorizontalAlignment="Left" Height="26" Margin="56,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
-        <Button x:Name="btnDeleteCategory" Content="Delete " HorizontalAlignment="Left" Margin="47,102,0,0" VerticalAlignment="Top" Width="65" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnDeleteCategory_Click" Background="#FFF73131" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
-        <ComboBox x:Name="comboBoxCategory" HorizontalAlignment="Left" Margin="56,37,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxCategory_SelectionChanged">
+        <TextBox x:Name="txboxSavefileName" HorizontalAlignment="Left" Height="35" Margin="451,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" Background="White"/>
+        <Button x:Name="btnImportSavestate" Content="Import Save" HorizontalAlignment="Left" Margin="610,156,0,0" VerticalAlignment="Top" Width="93" Click="BtnImportSavestate_Click" Height="50" FontFamily="Poor Richard" FontSize="16" FontStyle="Italic" Background="White" MouseEnter="BtnImportSavestate_MouseEnter" MouseLeave="BtnImportSavestate_MouseLeave"/>
+        <TextBlock x:Name="tblkNotificationMessage" HorizontalAlignment="Left" Margin="610,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="65" Width="148" FontSize="18" FontFamily="Poor Richard" FontStyle="Italic" Foreground="Red"/>
+        <ListBox x:Name="lstboxSegments" HorizontalAlignment="Left" Height="250" Margin="283,67,0,0" VerticalAlignment="Top" Width="127" SelectionChanged="LstboxSegments_SelectionChanged" Background="White"/>
+        <TextBlock x:Name="tblkHeader1" HorizontalAlignment="Left" Margin="300,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Segments" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
+        <Button x:Name="btnCreateSegment" Content="Create" HorizontalAlignment="Left" Margin="277,362,0,0" VerticalAlignment="Top" Width="69" Height="24" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateSegment_Click" Background="#FF00FF22" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
+        <TextBox x:Name="txboxCreateSegment" HorizontalAlignment="Left" Height="35" Margin="283,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127" Background="White"/>
+        <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="610,223,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click" Background="White" FontStyle="Italic" MouseEnter="BtnUpdateSave_MouseEnter" MouseLeave="BtnUpdateSave_MouseLeave"/>
+        <Button x:Name="btnDeleteSegment" Content="Delete" HorizontalAlignment="Left" Margin="353,362,0,0" VerticalAlignment="Top" Width="66" FontFamily="Poor Richard" FontSize="18" Click="BtnDeleteSegment_Click" Background="#FFC51F1F" FontStyle="Italic" Height="24" MouseEnter="BtnDeleteSegment_MouseEnter" MouseLeave="BtnDeleteSegment_MouseLeave"/>
+        <Button x:Name="btnDeleteSavefile1" Content="Delete " HorizontalAlignment="Left" Margin="520,362,0,0" VerticalAlignment="Top" Width="69" FontFamily="Poor Richard" Height="24" FontSize="18" Click="BtnDeleteSavefile1_Click" Background="#FFD12020" FontStyle="Italic" MouseEnter="BtnDeleteSavefile1_MouseEnter" MouseLeave="BtnDeleteSavefile1_MouseLeave"/>
+        <TextBlock x:Name="tblkButtonDescription" HorizontalAlignment="Left" Margin="257,405,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="18" Width="343" FontFamily="Poor Richard" FontSize="16" TextDecorations="{x:Null}"/>
+        <TextBlock x:Name="tblkHeader3" HorizontalAlignment="Left" Margin="147,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Category" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
+        <Button x:Name="btnCreateCategory" Content="Create" HorizontalAlignment="Left" Margin="124,211,0,0" VerticalAlignment="Top" Width="69" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click" Background="#FF0CFF00" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
+        <TextBox x:Name="txboxCreateCategory" HorizontalAlignment="Left" Height="26" Margin="134,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
+        <Button x:Name="btnDeleteCategory" Content="Delete " HorizontalAlignment="Left" Margin="198,211,0,0" VerticalAlignment="Top" Width="65" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnDeleteCategory_Click" Background="#FFF73131" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
+        <ComboBox x:Name="comboBoxCategory" HorizontalAlignment="Left" Margin="134,146,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxCategory_SelectionChanged">
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF0F0F0" Offset="0"/>
