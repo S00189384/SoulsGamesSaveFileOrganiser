@@ -68,7 +68,7 @@ namespace Test
             }
         }
 
-        //Categories.
+        //Categories List Box.
         private void LstBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lstBoxCategories.SelectedIndex != -1)
@@ -93,24 +93,21 @@ namespace Test
         }
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
-            if(lstBoxCategories.SelectedIndex != -1)
-            {
-                //Delete Category and Folder with all its content.
-                Category categoryToDelete = categoryList[lstBoxCategories.SelectedIndex];
-                System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName,true);
-                categoryList.Remove(categoryToDelete);
-                categoryToDelete = null;
+            if (!UserSelectedNecessaryItems(lstBoxCategories))
+                return;
 
-                //Update window.
-                RefreshListBox<Category>(lstBoxCategories, categoryList);
-                RefreshListBox<Segment>(lstboxSegments, null);
-                RefreshListBox<Savefile>(lstBoxSavefiles, null);
-                UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
-            }
-            else
-            {
-                UpdateNotificationMessage("No category selected", TypeOfNotificationMessage.Error);
-            }
+            //Delete Category and Folder with all its content.
+            Category categoryToDelete = categoryList[lstBoxCategories.SelectedIndex];
+            System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName,true);
+            categoryList.Remove(categoryToDelete);
+            categoryToDelete = null;
+
+            //Update window.
+            RefreshListBox<Category>(lstBoxCategories, categoryList);
+            RefreshListBox<Segment>(lstboxSegments, null);
+            RefreshListBox<Savefile>(lstBoxSavefiles, null);
+            UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
+
         }
 
         //Segments.
@@ -141,35 +138,27 @@ namespace Test
         }
         private void BtnDeleteSegment_Click(object sender, RoutedEventArgs e)
         {
-            if (lstBoxCategories.SelectedIndex != -1)
-            {
-                if(lstboxSegments.SelectedIndex != -1)
-                {
-                    Category selectedCategory = GetSelectedCategory();
-                    Segment segmentToDelete = GetSelectedSegment();
+            if (!UserSelectedNecessaryItems(lstboxSegments))
+                return;
 
-                    System.IO.Directory.Delete(segmentToDelete.directoryInfo.FullName, true);
-                    selectedCategory.segments.Remove(segmentToDelete);
+            //Get selected category and segment.
+            Category selectedCategory = GetSelectedCategory();
+            Segment segmentToDelete = GetSelectedSegment();
 
-                    RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
-                    RefreshListBox<Savefile>(lstBoxSavefiles, null);
-                    UpdateNotificationMessage("Segment deleted.", TypeOfNotificationMessage.Success);
-                }
-                else
-                {
-                    UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
-                }             
-            }
-            else
-            {
-                UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
-            }
+            //Delete segment and folder.
+            System.IO.Directory.Delete(segmentToDelete.directoryInfo.FullName, true);
+            selectedCategory.segments.Remove(segmentToDelete);
+
+            //Refresh window.
+            RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
+            RefreshListBox<Savefile>(lstBoxSavefiles, null);
+            UpdateNotificationMessage("Segment deleted.", TypeOfNotificationMessage.Success);
         }
 
         //Saves. 
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserCanCreateObject(typeof(Savefile), lstBoxSavefiles, txboxSavefileName))
+            if (!UserCanCreateObject(typeof(Savefile), lstboxSegments, txboxSavefileName))
                 return;
  
             //Create savefile and folder.
@@ -185,38 +174,18 @@ namespace Test
         }
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
         {
-            if (lstBoxCategories.SelectedIndex != -1)
-            {
-                //If segment is selected.
-                if (lstboxSegments.SelectedIndex != -1)
-                {
-                    //If save file is selected.
-                    if (lstBoxSavefiles.SelectedIndex != -1)
-                    {
-                        //Delete files in actual savefile location.
-                        foreach (FileInfo file in saveFileLocation.GetFiles())
-                        {
-                            file.Delete();
-                        }
+            if (!UserSelectedNecessaryItems(lstBoxSavefiles))
+                return;
 
-                        //Add new savefile.
-                        ImportSavestate(GetSelectedSavefile());
-                        UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
-                    }
-                    else
-                    {
-                        UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
-                    }
-                }
-                else
-                {
-                    UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
-                }
-            }
-            else
-            {
-                UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
-            }        
+             //Delete files in actual savefile location.
+             foreach (FileInfo file in saveFileLocation.GetFiles())
+             {
+                file.Delete();
+             }
+
+             //Add new savefile.
+             ImportSavestate(GetSelectedSavefile());
+             UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);    
         }
         private void ImportSavestate(Savefile savefile)
         {
@@ -249,47 +218,26 @@ namespace Test
         }
         private void BtnUpdateSave_Click(object sender, RoutedEventArgs e)
         {
-            if(lstBoxCategories.SelectedIndex != -1)
-            {
-                if (lstboxSegments.SelectedIndex != -1)
-                {
-                    //Update Save.
-                    if (lstBoxSavefiles.SelectedIndex != -1)
-                    {
-                        CreateSaveFile(GetSelectedSavefile());
-                        UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
-                    }
-                    else
-                    {
-                        UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
-                    }
-                }
-                else
-                {
-                    UpdateNotificationMessage("No segment selected.", TypeOfNotificationMessage.Error);
-                }
-            }
-            else
-            {
-                UpdateNotificationMessage("No category selected.", TypeOfNotificationMessage.Error);
-            }         
+            if (!UserSelectedNecessaryItems(lstBoxSavefiles))
+                return;
+
+            //Update savefile.
+            CreateSaveFile(GetSelectedSavefile());
+            UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
         }
         private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
         {
-            if (lstBoxSavefiles.SelectedIndex != -1)
-            {
-                Savefile selectedSavefile = GetSelectedSavefile();
+            if (!UserSelectedNecessaryItems(lstBoxSavefiles))
+                return;
 
-                System.IO.Directory.Delete(selectedSavefile.directoryInfo.FullName, true);
-                GetSelectedSegment().savefiles.Remove(selectedSavefile);
+            //Delete savefile.
+            Savefile selectedSavefile = GetSelectedSavefile();
+            System.IO.Directory.Delete(selectedSavefile.directoryInfo.FullName, true);
+            GetSelectedSegment().savefiles.Remove(selectedSavefile);
 
-                RefreshListBox<Savefile>(lstBoxSavefiles, GetSelectedSegment().savefiles);
-                UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
-            }
-            else
-            {
-                UpdateNotificationMessage("No savefile selected.", TypeOfNotificationMessage.Error);
-            }
+            //Refresh window.
+            RefreshListBox<Savefile>(lstBoxSavefiles, GetSelectedSegment().savefiles);
+            UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
         }
 
         //Getting selected savefiles, segments, categories.
@@ -412,8 +360,7 @@ namespace Test
             }
 
             //Check if right items are selected in list boxes to create object.
-
-            if (!ListboxHasItemSelected(listBoxToAddObjectTo))
+            if (!UserSelectedNecessaryItems(listBoxToAddObjectTo))
                 return false;
 
             //Check if object with same name already exists.
@@ -435,7 +382,7 @@ namespace Test
             //If all checks are successfull return true.
             return true;
         }
-        private bool ListboxHasItemSelected(ListBox listBoxToCheck)
+        private bool UserSelectedNecessaryItems(ListBox listBoxToCheck)
         {
             if(listBoxToCheck == lstBoxCategories)
             {
@@ -455,6 +402,11 @@ namespace Test
                     UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
                     return false;
                 }
+                else if(lstboxSegments.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
+                    return false;
+                }
 
                 else
                     return true;
@@ -472,11 +424,22 @@ namespace Test
                     UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
                     return false;
                 }
+                else if(lstBoxSavefiles.SelectedIndex == -1)
+                {
+                    UpdateNotificationMessage("No Savefile Selected", TypeOfNotificationMessage.Error);
+                }
                 else
                     return true;
             }
 
-            return true;
+            return false;
+        }
+
+
+        //Add later.
+        private void ComboBoxCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
