@@ -37,7 +37,7 @@ namespace Test
             mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Demon's Souls Savefiles");
 
             ImportCreatedSavefiles();
-            RefreshListBox<Category>(lstBoxCategories, categoryList);
+            comboBoxCategory.ItemsSource = categoryList;
         }
 
         //Start
@@ -68,77 +68,82 @@ namespace Test
             }
         }
 
-        //Categories List Box.
+        //Categories.
         private void LstBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lstBoxCategories.SelectedIndex != -1)
+            //if (lstBoxCategories.SelectedIndex != -1)
+            //{
+            //    RefreshListBox<Savefile>(lstBoxSavefiles, null);
+            //    RefreshListBox<Segment>(lstboxSegments, GetSelectedCategory().segments);
+            //}
+        }
+        private void ComboBoxCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboBoxCategory.SelectedIndex != -1)
             {
                 RefreshListBox<Savefile>(lstBoxSavefiles, null);
-                RefreshListBox<Segment>(lstboxSegments, GetSelectedCategory().segments);
+                RefreshListBox(lstboxSegments, GetSelectedCategory().segments);
             }
         }
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserCanCreateObject(typeof(Category), lstBoxCategories, txboxCreateCategory))
+            if (!CanUserCreateObject(typeof(Category), categoryList, txboxCreateCategory))
                 return;
 
             //Create category and folder.
-            string nameOfCategoryToCreate = txboxCreateCategory.Text;
-            categoryList.Add(new Category(nameOfCategoryToCreate, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + nameOfCategoryToCreate)));
+            string nameOfNewCategory = txboxCreateCategory.Text;
+            Category newCategory = new Category(nameOfNewCategory, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + nameOfNewCategory));
+            categoryList.Add(newCategory);
 
             //Update window.
-            RefreshListBox<Category>(lstBoxCategories, categoryList);
+            RefreshComboBox(comboBoxCategory, categoryList);
             UpdateNotificationMessage("Category added.", TypeOfNotificationMessage.Success);
             UpdateTextBox(txboxCreateCategory, "");
         }
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserSelectedNecessaryItems(lstBoxCategories))
+            if (!IsItemSelected(typeof(Category)))
                 return;
 
             //Delete Category and Folder with all its content.
-            Category categoryToDelete = categoryList[lstBoxCategories.SelectedIndex];
-            System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName,true);
+            Category categoryToDelete = GetSelectedCategory();
+            System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName, true);
             categoryList.Remove(categoryToDelete);
             categoryToDelete = null;
 
             //Update window.
-            RefreshListBox<Category>(lstBoxCategories, categoryList);
-            RefreshListBox<Segment>(lstboxSegments, null);
+            RefreshComboBox(comboBoxCategory, categoryList);
+            RefreshListBox<Segment>(lstboxSegments, GetSelectedSegments());
             RefreshListBox<Savefile>(lstBoxSavefiles, null);
             UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
-
         }
-
         //Segments.
         private void BtnCreateSegment_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserCanCreateObject(typeof(Segment), lstboxSegments, txboxCreateSegment))
+            if (!CanUserCreateObject(typeof(Segment), GetSelectedSegments(), txboxCreateSegment))
                 return;
 
             //Create new segment and folder.
             Category selectedCategory = GetSelectedCategory();
-            Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text),selectedCategory);
+            Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text), selectedCategory);
             selectedCategory.segments.Add(newSegment);
-                  
+
             //Update window.
-            RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
-            RefreshListBox<Savefile>(lstBoxSavefiles, newSegment.savefiles);
+            RefreshListBox(lstboxSegments, selectedCategory.segments);
+            RefreshListBox(lstBoxSavefiles, newSegment.savefiles);
             UpdateTextBox(txboxCreateSegment, "");
             UpdateNotificationMessage("Segment created.", TypeOfNotificationMessage.Success);
-
-              
         }
         private void LstboxSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(lstboxSegments.SelectedIndex != -1)
             {
-                RefreshListBox<Savefile>(lstBoxSavefiles, GetSelectedSegment().savefiles);
+                RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
             }
         }
         private void BtnDeleteSegment_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserSelectedNecessaryItems(lstboxSegments))
+            if (!IsItemSelected(typeof(Segment)))
                 return;
 
             //Get selected category and segment.
@@ -150,42 +155,42 @@ namespace Test
             selectedCategory.segments.Remove(segmentToDelete);
 
             //Refresh window.
-            RefreshListBox<Segment>(lstboxSegments, selectedCategory.segments);
+            RefreshListBox(lstboxSegments, selectedCategory.segments);
             RefreshListBox<Savefile>(lstBoxSavefiles, null);
-            UpdateNotificationMessage("Segment deleted.", TypeOfNotificationMessage.Success);
+            UpdateNotificationMessage("Segment Deleted.", TypeOfNotificationMessage.Success);
         }
 
         //Saves. 
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserCanCreateObject(typeof(Savefile), lstboxSegments, txboxSavefileName))
+            if (!CanUserCreateObject(typeof(Savefile), GetSelectedSavefiles(), txboxSavefileName))
                 return;
- 
+
             //Create savefile and folder.
             Segment selectedSegment = GetSelectedSegment();
-            Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.directoryInfo.FullName + "\\" + txboxSavefileName.Text),selectedSegment);
+            Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.directoryInfo.FullName + "\\" + txboxSavefileName.Text), selectedSegment);
             selectedSegment.savefiles.Add(newSaveFile);
             CreateSaveFile(newSaveFile);
 
             //Update Window.
-            RefreshListBox<Savefile>(lstBoxSavefiles,selectedSegment.savefiles);
+            RefreshListBox(lstBoxSavefiles, selectedSegment.savefiles);
             UpdateTextBox(txboxSavefileName, "");
             UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
         }
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserSelectedNecessaryItems(lstBoxSavefiles))
+            if (!IsItemSelected(typeof(Savefile)))
                 return;
 
-             //Delete files in actual savefile location.
-             foreach (FileInfo file in saveFileLocation.GetFiles())
-             {
+            //Delete files in actual savefile location.
+            foreach (FileInfo file in saveFileLocation.GetFiles())
+            {
                 file.Delete();
-             }
+            }
 
-             //Add new savefile.
-             ImportSavestate(GetSelectedSavefile());
-             UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);    
+            //Add new savefile.
+            ImportSavestate(GetSelectedSavefile());
+            UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
         }
         private void ImportSavestate(Savefile savefile)
         {
@@ -218,7 +223,7 @@ namespace Test
         }
         private void BtnUpdateSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserSelectedNecessaryItems(lstBoxSavefiles))
+            if (!IsItemSelected(typeof(Savefile)))
                 return;
 
             //Update savefile.
@@ -227,7 +232,7 @@ namespace Test
         }
         private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
         {
-            if (!UserSelectedNecessaryItems(lstBoxSavefiles))
+            if (!IsItemSelected(typeof(Savefile)))
                 return;
 
             //Delete savefile.
@@ -236,27 +241,33 @@ namespace Test
             GetSelectedSegment().savefiles.Remove(selectedSavefile);
 
             //Refresh window.
-            RefreshListBox<Savefile>(lstBoxSavefiles, GetSelectedSegment().savefiles);
+            RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
             UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
         }
 
         //Getting selected savefiles, segments, categories.
         private Savefile GetSelectedSavefile()
         {
-            return categoryList[lstBoxCategories.SelectedIndex].segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+            return categoryList[comboBoxCategory.SelectedIndex].segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
         }
         private Segment GetSelectedSegment()
         {
-            return categoryList[lstBoxCategories.SelectedIndex].segments[lstboxSegments.SelectedIndex];
+            return categoryList[comboBoxCategory.SelectedIndex].segments[lstboxSegments.SelectedIndex];
         }
         private Category GetSelectedCategory()
         {
-            return categoryList[lstBoxCategories.SelectedIndex];
+            return comboBoxCategory.SelectedIndex != -1 ? categoryList[comboBoxCategory.SelectedIndex] : null;
         }
-        private string GetSelectedItemName(Type typeOfObject, ListBox listBoxContainingItem)
+        private List<Segment> GetSelectedSegments()
         {
-            return listBoxContainingItem.SelectedItem.GetType().ToString();
+            return comboBoxCategory.SelectedIndex == -1 ? null : GetSelectedCategory().segments;
         }
+        private List<Savefile> GetSelectedSavefiles()
+        {
+            return comboBoxCategory.SelectedIndex == -1 || lstboxSegments.SelectedIndex == -1 ? null : GetSelectedSegment().savefiles;
+        }
+
+
 
         //Notifications / Descriptions.
         private async void UpdateNotificationMessage(string message,TypeOfNotificationMessage typeOfMessage)
@@ -285,6 +296,7 @@ namespace Test
         {
             tblkButtonDescription.Text = "";
         }
+
         //Button mouse over / exit - shows and hides description of what button does.
         private void BtnCreateSegment_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -350,71 +362,42 @@ namespace Test
             listBoxToRefresh.ItemsSource = null;
             listBoxToRefresh.ItemsSource = listToShow;
         }
-        private bool UserCanCreateObject(Type typeOfObject, ListBox listBoxToAddObjectTo, TextBox textBoxWithObjectName)
+        //Test when adding games.
+        private void RefreshComboBox<T>(ComboBox comboBoxToRefresh,List<T> listToShow)
         {
-            //Check if text box has name for object.
+            comboBoxToRefresh.ItemsSource = null;
+            comboBoxToRefresh.ItemsSource = listToShow;
+            if (categoryList.Count != 0)
+                comboBoxCategory.SelectedIndex = categoryList.Count - 1;
+
+        }
+
+        //Making program not crash if user hasn't correct objects selected.
+        private bool CanUserCreateObject<T>(Type typeOfObject, List<T> listToCheck, TextBox textBoxWithObjectName)
+        {
+            //Check if text box has name.
             if (textBoxWithObjectName.Text == "")
             {
                 UpdateNotificationMessage("Enter " + typeOfObject.Name + " Name.", TypeOfNotificationMessage.Error);
                 return false;
             }
 
-            //Check if right items are selected in list boxes to create object.
-            if (!UserSelectedNecessaryItems(listBoxToAddObjectTo))
-                return false;
-
-            //Check if object with same name already exists.
-            if (listBoxToAddObjectTo.ItemsSource != null)
+            //Check if correct selections have been made.
+            if (typeOfObject == typeof(Category))
+                return true;
+            else if (typeOfObject == typeof(Segment))
             {
-                string nameOfObjectToCreate = textBoxWithObjectName.Text;
-
-                foreach (object listItem in listBoxToAddObjectTo.ItemsSource)
-                {
-                    if (listItem.ToString() == nameOfObjectToCreate)
-                    {
-                        UpdateTextBox(textBoxWithObjectName, "");
-                        UpdateNotificationMessage(typeOfObject.Name + " With Same Name Already Exists", TypeOfNotificationMessage.Error);
-                        return false;
-                    }
-                }
-            }
-
-            //If all checks are successfull return true.
-            return true;
-        }
-        private bool UserSelectedNecessaryItems(ListBox listBoxToCheck)
-        {
-            if(listBoxToCheck == lstBoxCategories)
-            {
-                if (lstBoxCategories.SelectedIndex == -1)
+                if (comboBoxCategory.SelectedIndex == -1)
                 {
                     UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
                     return false;
                 }
-                else
-                    return true;                        
-            }
-
-            else if (listBoxToCheck == lstboxSegments)
-            {
-                if (lstBoxCategories.SelectedIndex == -1)
-                {
-                    UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
-                    return false;
-                }
-                else if(lstboxSegments.SelectedIndex == -1)
-                {
-                    UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
-                    return false;
-                }
-
                 else
                     return true;
             }
-
-            else if(listBoxToCheck == lstBoxSavefiles)
+            else if (typeOfObject == typeof(Savefile))
             {
-                if (lstBoxCategories.SelectedIndex == -1)
+                if (comboBoxCategory.SelectedIndex == -1)
                 {
                     UpdateNotificationMessage("No Category Selected", TypeOfNotificationMessage.Error);
                     return false;
@@ -424,22 +407,46 @@ namespace Test
                     UpdateNotificationMessage("No Segment Selected", TypeOfNotificationMessage.Error);
                     return false;
                 }
-                else if(lstBoxSavefiles.SelectedIndex == -1)
-                {
-                    UpdateNotificationMessage("No Savefile Selected", TypeOfNotificationMessage.Error);
-                }
                 else
                     return true;
             }
 
-            return false;
+            //Check if name in list already exists.
+            else if (listToCheck.Count != 0 || listToCheck != null)
+            {
+                foreach (object listItem in listToCheck)
+                {
+                    if (listItem.ToString() == textBoxWithObjectName.Text)
+                    {
+                        UpdateTextBox(textBoxWithObjectName, "");
+                        UpdateNotificationMessage(typeOfObject.Name + " With Same Name Already Exists", TypeOfNotificationMessage.Error);
+                        return false;
+                    }
+                }
+            }
+
+            //If all checks are successful return true.
+            return true;
         }
-
-
-        //Add later.
-        private void ComboBoxCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private bool IsItemSelected(Type typeOfObject)
         {
+            bool CanDelete = true;
 
+            if (typeOfObject == typeof(Category))
+                CanDelete = comboBoxCategory.SelectedIndex != -1;
+            else if(typeOfObject == typeof(Segment))
+                CanDelete = lstboxSegments.SelectedIndex != -1;
+            else if(typeOfObject == typeof(Savefile))
+                CanDelete = lstBoxSavefiles.SelectedIndex != -1;
+
+            if(CanDelete == false)
+            {
+                UpdateNotificationMessage("No " + typeOfObject.Name + " Selected.", TypeOfNotificationMessage.Error);
+                return false;
+            }
+
+            //If all checks are successfull return true.
+            return true;
         }
     }
 }
