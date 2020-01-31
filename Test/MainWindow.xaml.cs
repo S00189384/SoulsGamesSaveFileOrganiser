@@ -267,8 +267,6 @@ namespace Test
             return comboBoxCategory.SelectedIndex == -1 || lstboxSegments.SelectedIndex == -1 ? null : GetSelectedSegment().savefiles;
         }
 
-
-
         //Notifications / Descriptions.
         private async void UpdateNotificationMessage(string message,TypeOfNotificationMessage typeOfMessage)
         {
