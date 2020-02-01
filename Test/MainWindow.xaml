@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="DeS Emulator Save File Organiser" Height="466.356" Width="784.051">
+        Title="DeS Emulator Save File Organiser" Height="464.356" Width="784.051" ResizeMode="NoResize">
     <Grid Margin="0,0,-6,-1" RenderTransformOrigin="0.5,0.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -43,11 +43,11 @@
         <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="610,223,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click" Background="White" FontStyle="Italic" MouseEnter="BtnUpdateSave_MouseEnter" MouseLeave="BtnUpdateSave_MouseLeave"/>
         <Button x:Name="btnDeleteSegment" Content="Delete" HorizontalAlignment="Left" Margin="353,362,0,0" VerticalAlignment="Top" Width="66" FontFamily="Poor Richard" FontSize="18" Click="BtnDeleteSegment_Click" Background="#FFC51F1F" FontStyle="Italic" Height="24" MouseEnter="BtnDeleteSegment_MouseEnter" MouseLeave="BtnDeleteSegment_MouseLeave"/>
         <Button x:Name="btnDeleteSavefile1" Content="Delete " HorizontalAlignment="Left" Margin="520,362,0,0" VerticalAlignment="Top" Width="69" FontFamily="Poor Richard" Height="24" FontSize="18" Click="BtnDeleteSavefile1_Click" Background="#FFD12020" FontStyle="Italic" MouseEnter="BtnDeleteSavefile1_MouseEnter" MouseLeave="BtnDeleteSavefile1_MouseLeave"/>
-        <TextBlock x:Name="tblkButtonDescription" HorizontalAlignment="Left" Margin="257,405,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="18" Width="343" FontFamily="Poor Richard" FontSize="16" TextDecorations="{x:Null}"/>
+        <TextBlock x:Name="tblkButtonDescription" HorizontalAlignment="Left" Margin="237,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="18" Width="403" FontFamily="Poor Richard" FontSize="16" TextDecorations="{x:Null}"/>
         <TextBlock x:Name="tblkHeader3" HorizontalAlignment="Left" Margin="147,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Category" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
-        <Button x:Name="btnCreateCategory" Content="Create" HorizontalAlignment="Left" Margin="124,211,0,0" VerticalAlignment="Top" Width="69" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click" Background="#FF0CFF00" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
+        <Button x:Name="btnCreateCategory" Content="Create" HorizontalAlignment="Left" Margin="124,211,0,0" VerticalAlignment="Top" Width="69" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click" Background="#FF0CFF00" FontStyle="Italic" MouseEnter="BtnCreateCategory_MouseEnter" MouseLeave="BtnCreateCategory_MouseLeave"/>
         <TextBox x:Name="txboxCreateCategory" HorizontalAlignment="Left" Height="26" Margin="134,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
-        <Button x:Name="btnDeleteCategory" Content="Delete " HorizontalAlignment="Left" Margin="198,211,0,0" VerticalAlignment="Top" Width="65" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnDeleteCategory_Click" Background="#FFF73131" FontStyle="Italic" MouseEnter="BtnCreateSegment_MouseEnter" MouseLeave="BtnCreateSegment_MouseLeave"/>
+        <Button x:Name="btnDeleteCategory" Content="Delete " HorizontalAlignment="Left" Margin="198,211,0,0" VerticalAlignment="Top" Width="65" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnDeleteCategory_Click" Background="#FFF73131" FontStyle="Italic" MouseEnter="BtnDeleteCategory_MouseEnter" MouseLeave="BtnDeleteCategory_MouseLeave"/>
         <ComboBox x:Name="comboBoxCategory" HorizontalAlignment="Left" Margin="134,146,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBoxCategory_SelectionChanged">
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">

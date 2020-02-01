@@ -69,14 +69,6 @@ namespace Test
         }
 
         //Categories.
-        private void LstBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //if (lstBoxCategories.SelectedIndex != -1)
-            //{
-            //    RefreshListBox<Savefile>(lstBoxSavefiles, null);
-            //    RefreshListBox<Segment>(lstboxSegments, GetSelectedCategory().segments);
-            //}
-        }
         private void ComboBoxCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (comboBoxCategory.SelectedIndex != -1)
@@ -345,6 +337,22 @@ namespace Test
         {
             HideButtonDescription();
         }
+        private void BtnDeleteCategory_MouseEnter(object sender, MouseEventArgs e)
+        {
+            tblkButtonDescription.Text = "Delete selected category.";
+        }
+        private void BtnDeleteCategory_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideButtonDescription();
+        }
+        private void BtnCreateCategory_MouseEnter(object sender, MouseEventArgs e)
+        {
+            tblkButtonDescription.Text = "Create category which segments and savefiles can be added to.";
+        }
+        private void BtnCreateCategory_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideButtonDescription();
+        }
 
         //General
         private void UpdateTextBlock(TextBlock textBlock,string message)
@@ -428,16 +436,16 @@ namespace Test
         }
         private bool IsItemSelected(Type typeOfObject)
         {
-            bool CanDelete = true;
+            bool IsItemSelected = true;
 
             if (typeOfObject == typeof(Category))
-                CanDelete = comboBoxCategory.SelectedIndex != -1;
+                IsItemSelected = comboBoxCategory.SelectedIndex != -1;
             else if(typeOfObject == typeof(Segment))
-                CanDelete = lstboxSegments.SelectedIndex != -1;
+                IsItemSelected = lstboxSegments.SelectedIndex != -1;
             else if(typeOfObject == typeof(Savefile))
-                CanDelete = lstBoxSavefiles.SelectedIndex != -1;
+                IsItemSelected = lstBoxSavefiles.SelectedIndex != -1;
 
-            if(CanDelete == false)
+            if(IsItemSelected == false)
             {
                 UpdateNotificationMessage("No " + typeOfObject.Name + " Selected.", TypeOfNotificationMessage.Error);
                 return false;
