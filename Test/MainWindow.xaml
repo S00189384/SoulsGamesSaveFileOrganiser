@@ -57,6 +57,16 @@
                 </LinearGradientBrush>
             </ComboBox.Background>
         </ComboBox>
+        <Button x:Name="btnSelectGameLeft" Content="Button" HorizontalAlignment="Left" Margin="283,10,0,0" VerticalAlignment="Top" Width="29" Height="25" BorderBrush="#00000000" Foreground="#00000000">
+            <Button.Background>
+                <ImageBrush ImageSource="Pictures/arrow.png" Stretch="UniformToFill"/>
+            </Button.Background>
+        </Button>
+        <Button x:Name="btnSelectGameRight" Content="Button" HorizontalAlignment="Left" Margin="529,10,0,0" VerticalAlignment="Top" Width="29" Height="25" BorderBrush="#00000000" Foreground="#00000000">
+            <Button.Background>
+                <ImageBrush ImageSource="Pictures/arrowR.png" Stretch="UniformToFill"/>
+            </Button.Background>
+        </Button>
 
     </Grid>
 </Window>

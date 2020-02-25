@@ -31,16 +31,47 @@ namespace Test
         DirectoryInfo mainFolder;
         List<Category> categoryList = new List<Category>();
 
+
+        //Games
+        LinkedList<Game> GamesList = new LinkedList<Game>();
+        LinkedListNode<Game> selectedGameNode;
+
         public MainWindow()
         {
             InitializeComponent();
-            mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Demon's Souls Savefiles");
+            mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Save File Organiser");
+            CreateGames();
 
-            ImportCreatedSavefiles();
+            //ImportCreatedSavefiles();
             comboBoxCategory.ItemsSource = categoryList;
         }
 
         //Start
+        private void CreateGames()
+        {
+            Game DarkSouls3 = new Game("Dark Souls 3", mainFolder);
+            System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + DarkSouls3.Name);
+            GamesList.AddFirst(DarkSouls3);
+
+            Game DarkSouls2 = new Game("Dark Souls 2", mainFolder);
+            System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + DarkSouls2.Name);
+            GamesList.AddFirst(DarkSouls2);
+
+            Game DarkSoulsRemastered = new Game("Dark Souls Remastered", mainFolder);
+            System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + DarkSoulsRemastered.Name);
+            GamesList.AddFirst(DarkSoulsRemastered);
+
+            Game DarkSouls = new Game("Dark Souls", mainFolder);
+            System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + DarkSouls.Name);
+            GamesList.AddFirst(DarkSouls);
+
+            Game DemonsSouls = new Game("Demon's Souls", mainFolder);
+            System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + DemonsSouls.Name);
+            GamesList.AddFirst(DemonsSouls);
+
+            selectedGameNode = GamesList.First;
+        }
+
         private void ImportCreatedSavefiles()
         {
             //Categories.
@@ -67,6 +98,7 @@ namespace Test
                 }
             }
         }
+
 
         //Categories.
         private void ComboBoxCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -39,7 +39,6 @@ C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\MainWindow.baml
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.g.resources
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.Properties.Resources.resources
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.csproj.GenerateResource.cache
-C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.exe
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.pdb
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.csprojAssemblyReference.cache
