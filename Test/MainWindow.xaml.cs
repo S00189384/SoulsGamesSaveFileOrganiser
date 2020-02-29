@@ -29,9 +29,6 @@ namespace Test
         System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         DirectoryInfo mainFolder;
-
-
-        //Games
         List<Game> GamesList = new List<Game>();
 
         public MainWindow()
@@ -62,8 +59,8 @@ namespace Test
 
             comboBoxGame.ItemsSource = GamesList;
             comboBoxGame.SelectedIndex = 0;
+            
         }
-
         private void ImportCreatedSavefiles()
         {
             //For each game.
@@ -94,30 +91,6 @@ namespace Test
                     }
                 }
             }
-
-            //Categories.
-            //string[] categoriesInMainFolder = System.IO.Directory.GetDirectories(mainFolder.FullName);
-            //for (int c = 0; c < categoriesInMainFolder.Length; c++)
-            //{
-            //    Category currentCategory = new Category(System.IO.Path.GetFileName(categoriesInMainFolder[c]), new DirectoryInfo(categoriesInMainFolder[c]));
-            //    categoryList.Add(currentCategory);
-
-            //    //Segments in each category.
-            //    string[] segmentsInCategory = System.IO.Directory.GetDirectories(currentCategory.directoryInfo.FullName);
-            //    for (int s = 0; s < segmentsInCategory.Length; s++)
-            //    {
-            //        Segment currentSegment = new Segment(System.IO.Path.GetFileName(segmentsInCategory[s]), new DirectoryInfo(segmentsInCategory[s]), currentCategory);
-            //        currentCategory.segments.Add(currentSegment);
-
-            //        //Savefiles in each segment.
-            //        string[] saveFilesInSegment = System.IO.Directory.GetDirectories(currentSegment.directoryInfo.FullName);
-            //        for (int x = 0; x < saveFilesInSegment.Length; x++)
-            //        {
-            //            Savefile currentSavefile = new Savefile(System.IO.Path.GetFileName(saveFilesInSegment[x]), new DirectoryInfo(saveFilesInSegment[x]), currentSegment);
-            //            currentSegment.savefiles.Add(currentSavefile);
-            //        }
-            //    }
-            //}
         }
 
         //Games
