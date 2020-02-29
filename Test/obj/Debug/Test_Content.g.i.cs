@@ -8,6 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pictures/arrowr.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pictures/backgroundimage1.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pictures/backgroundimage2.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pictures/backgroundimage3.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("pictures/backgroundimage4.png")]
 
 

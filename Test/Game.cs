@@ -13,10 +13,12 @@ namespace Test
         public DirectoryInfo directoryInfo { get; set; }
         public List<Category> Categories { get; set; }
 
+        public Game() { }
         public Game(string Name,DirectoryInfo directoryInfo)
         {
             this.Name = Name;
             this.directoryInfo = directoryInfo;
+            Categories = new List<Category>();
         }
 
         public override string ToString()
