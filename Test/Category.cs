@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    class Category
+    public class Category
     {
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }

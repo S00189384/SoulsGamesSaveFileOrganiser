@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    class Game
+    public class Game
     {
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }
         public List<Category> Categories { get; set; }
+
+        public string SaveFileLocation { get; set; }
+        public string UserSavesLocation { get; set; }
+
 
         public Game() { }
         public Game(string Name,DirectoryInfo directoryInfo)

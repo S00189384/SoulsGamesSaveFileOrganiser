@@ -23,17 +23,20 @@ namespace Test
             Success, //0
             Error //1
         }
+        Settings settingsWindow;
+
 
         //System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         //System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\FakeSaveFileLocation");
         System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         DirectoryInfo mainFolder;
-        List<Game> GamesList = new List<Game>();
+        public List<Game> GamesList = new List<Game>();
 
         public MainWindow()
         {
             InitializeComponent();
+            settingsWindow = new Settings(this);
             mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Save File Organiser");
             CreateGames();
             ImportCreatedSavefiles();
@@ -98,9 +101,9 @@ namespace Test
         {
             if(comboBoxGame.SelectedIndex != -1)
             {
-                RefreshComboBox(comboBoxCategory, GetSelectedGame().Categories);
-                RefreshListBox<Segment>(lstboxSegments, null);
-                RefreshListBox<Savefile>(lstBoxSavefiles, null);
+                WindowUpdater.RefreshComboBox(comboBoxCategory, GetSelectedGame().Categories);
+                WindowUpdater.RefreshListBox<Segment>(lstboxSegments, null);
+                WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
                 UpdateBackgroundPicture();
             }
         }
@@ -110,8 +113,8 @@ namespace Test
         {
             if (comboBoxCategory.SelectedIndex != -1)
             {
-                RefreshListBox(lstboxSegments, GetSelectedCategory().segments);
-                RefreshListBox<Savefile>(lstBoxSavefiles, null);
+                WindowUpdater.RefreshListBox(lstboxSegments, GetSelectedCategory().segments);
+                WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
             }
         }
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
@@ -127,9 +130,9 @@ namespace Test
             selectedGame.Categories.Add(newCategory);
 
             //Update window.
-            RefreshComboBox(comboBoxCategory, selectedGame.Categories);
+            WindowUpdater.RefreshComboBox(comboBoxCategory, selectedGame.Categories);
             UpdateNotificationMessage("Category added.", TypeOfNotificationMessage.Success);
-            UpdateTextBox(txboxCreateCategory, "");
+            WindowUpdater.UpdateTextBox(txboxCreateCategory, "");
         }
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
@@ -143,9 +146,9 @@ namespace Test
             categoryToDelete = null;
 
             //Update window.
-            RefreshComboBox(comboBoxCategory, GetSelectedGame().Categories);
-            RefreshListBox<Segment>(lstboxSegments, null);
-            RefreshListBox<Savefile>(lstBoxSavefiles, null);
+            WindowUpdater.RefreshComboBox(comboBoxCategory, GetSelectedGame().Categories);
+            WindowUpdater.RefreshListBox<Segment>(lstboxSegments, null);
+            WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
             UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
         }
         //Segments.
@@ -160,16 +163,16 @@ namespace Test
             selectedCategory.segments.Add(newSegment);
 
             //Update window.
-            RefreshListBox(lstboxSegments, selectedCategory.segments);
-            RefreshListBox(lstBoxSavefiles, newSegment.savefiles);
-            UpdateTextBox(txboxCreateSegment, "");
+            WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.segments);
+            WindowUpdater.RefreshListBox(lstBoxSavefiles, newSegment.savefiles);
+            WindowUpdater.UpdateTextBox(txboxCreateSegment, "");
             UpdateNotificationMessage("Segment Created.", TypeOfNotificationMessage.Success);
         }
         private void LstboxSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(lstboxSegments.SelectedIndex != -1)
             {
-                RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
+                WindowUpdater.RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
             }
         }
         private void BtnDeleteSegment_Click(object sender, RoutedEventArgs e)
@@ -186,8 +189,8 @@ namespace Test
             selectedCategory.segments.Remove(segmentToDelete);
 
             //Refresh window.
-            RefreshListBox(lstboxSegments, selectedCategory.segments);
-            RefreshListBox<Savefile>(lstBoxSavefiles, null);
+            WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.segments);
+            WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
             UpdateNotificationMessage("Segment Deleted.", TypeOfNotificationMessage.Success);
         }
 
@@ -204,8 +207,8 @@ namespace Test
             CreateSaveFile(newSaveFile);
 
             //Update Window.
-            RefreshListBox(lstBoxSavefiles, selectedSegment.savefiles);
-            UpdateTextBox(txboxSavefileName, "");
+            WindowUpdater.RefreshListBox(lstBoxSavefiles, selectedSegment.savefiles);
+            WindowUpdater.UpdateTextBox(txboxSavefileName, "");
             UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
         }
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
@@ -272,12 +275,12 @@ namespace Test
             GetSelectedSegment().savefiles.Remove(selectedSavefile);
 
             //Refresh window.
-            RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
+            WindowUpdater.RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
             UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
         }
 
         //Getting selected games, savefiles, segments, categories.
-        private Game GetSelectedGame()
+        public Game GetSelectedGame()
         {
             return comboBoxGame.SelectedIndex != -1 ? GamesList[comboBoxGame.SelectedIndex] : new Game();
         }
@@ -398,24 +401,25 @@ namespace Test
         }
 
         //Updating window.
-        private void UpdateTextBlock(TextBlock textBlock,string message)
-        {
-            textBlock.Text = message;
-        }
-        private void UpdateTextBox(TextBox textBox, string message)
-        {
-            textBox.Text = message;
-        }
-        private void RefreshListBox<T>(ListBox listBoxToRefresh,List<T> listToShow)
-        {
-            listBoxToRefresh.ItemsSource = null;
-            listBoxToRefresh.ItemsSource = listToShow;
-        }
-        private void RefreshComboBox<T>(ComboBox comboBoxToRefresh,List<T> listToShow)
-        {
-            comboBoxToRefresh.ItemsSource = null;
-            comboBoxToRefresh.ItemsSource = listToShow;
-        }
+        //private void UpdateTextBlock(TextBlock textBlock,string message)
+        //{
+        //    textBlock.Text = message;
+        //}
+        //private void UpdateTextBox(TextBox textBox, string message)
+        //{
+        //    textBox.Text = message;
+        //}
+        //private void RefreshListBox<T>(ListBox listBoxToRefresh,List<T> listToShow)
+        //{
+        //    listBoxToRefresh.ItemsSource = null;
+        //    listBoxToRefresh.ItemsSource = listToShow;
+        //}
+        //private void RefreshComboBox<T>(ComboBox comboBoxToRefresh,List<T> listToShow)
+        //{
+        //    comboBoxToRefresh.ItemsSource = null;
+        //    comboBoxToRefresh.ItemsSource = listToShow;
+        //}
+
         private void UpdateBackgroundPicture()
         {
             //Background images are indexed to represent the souls games 0 - Demon's Souls / 1 - Dark Souls etc.
@@ -487,7 +491,7 @@ namespace Test
                 {
                     if (listItem.ToString() == textBoxWithObjectName.Text)
                     {
-                        UpdateTextBox(textBoxWithObjectName, "");
+                        WindowUpdater.UpdateTextBox(textBoxWithObjectName, "");
                         UpdateNotificationMessage(typeOfObject.Name + " With Same Name Already Exists", TypeOfNotificationMessage.Error);
                         return false;
                     }
@@ -516,6 +520,11 @@ namespace Test
 
             //If all checks are successfull return true.
             return true;
+        }
+
+        private void BtnEditSettings_Click(object sender, RoutedEventArgs e)
+        {
+            settingsWindow.Show();
         }
     }
 }

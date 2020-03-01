@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Test
 {
-    class Savefile
+    public class Savefile
     {
         public string Name { get; set; }
         public DirectoryInfo directoryInfo { get; set; }

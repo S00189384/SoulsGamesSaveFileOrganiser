@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    class Segment
+    public class Segment
     {
         public static string ClassName = "Segment";
         public string Name { get; set; }

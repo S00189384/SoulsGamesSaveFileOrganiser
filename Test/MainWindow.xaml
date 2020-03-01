@@ -68,5 +68,16 @@
             </ComboBox.Background>
         </ComboBox>
 
+        <Button x:Name="btnEditSettings" Click="BtnEditSettings_Click" Margin="688,388,0,0">
+            <Button.Template>
+                <ControlTemplate>
+                    <Ellipse HorizontalAlignment="Left" Height="45" Margin="0,0,0,0" VerticalAlignment="Top" Width="45">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="Pictures/settings.png"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </Window>
