@@ -9,18 +9,17 @@ namespace Test
 {
     public class Segment
     {
-        public static string ClassName = "Segment";
         public string Name { get; set; }
-        public DirectoryInfo directoryInfo { get; set; }
-        public List<Savefile> savefiles { get; set; }
+        public DirectoryInfo Directory { get; set; }
+        public List<Savefile> Savefiles { get; set; }
         public Category Category { get; set; }
 
-        public Segment(string Name,DirectoryInfo directoryInfo,Category Category)
+        public Segment(string Name,DirectoryInfo Directory,Category Category)
         {
             this.Name = Name;
-            this.directoryInfo = directoryInfo;
+            this.Directory = Directory;
             this.Category = Category;
-            savefiles = new List<Savefile>();
+            Savefiles = new List<Savefile>();
         }
 
         public override string ToString()

@@ -10,14 +10,14 @@ namespace Test
     public class Savefile
     {
         public string Name { get; set; }
-        public DirectoryInfo directoryInfo { get; set; }
-        public Segment segment { get; set; }
+        public DirectoryInfo Directory { get; set; }
+        public Segment Segment { get; set; }
 
-        public Savefile(string Name,DirectoryInfo directoryInfo,Segment segment)
+        public Savefile(string Name,DirectoryInfo Directory,Segment Segment)
         {
             this.Name = Name;
-            this.directoryInfo = directoryInfo;
-            this.segment = segment;
+            this.Directory = Directory;
+            this.Segment = Segment;
         }
 
         public override string ToString()

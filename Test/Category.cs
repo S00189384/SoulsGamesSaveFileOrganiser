@@ -10,14 +10,14 @@ namespace Test
     public class Category
     {
         public string Name { get; set; }
-        public DirectoryInfo directoryInfo { get; set; }
-        public List<Segment> segments { get; set; }
+        public DirectoryInfo Directory { get; set; }
+        public List<Segment> Segments { get; set; }
 
-        public Category(string Name, DirectoryInfo directoryInfo)
+        public Category(string Name, DirectoryInfo Directory)
         {
             this.Name = Name;
-            this.directoryInfo = directoryInfo;
-            segments = new List<Segment>();
+            this.Directory = Directory;
+            Segments = new List<Segment>();
         }
 
         public override string ToString()

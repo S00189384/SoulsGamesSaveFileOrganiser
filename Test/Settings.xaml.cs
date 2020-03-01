@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,62 +19,75 @@ namespace Test
     public partial class Settings : Window
     {
         MainWindow mainWindow;
-
-        
+   
         public Settings(MainWindow mainWindow)
         {
             InitializeComponent();
             this.mainWindow = mainWindow;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
-
-            WindowUpdater.UpdateTextBlock(tblkSaveFileLocation, selectedGame.SaveFileLocation);
-            WindowUpdater.UpdateTextBlock(tblkUserSavesLocation, selectedGame.UserSavesLocation);
-        }
-
         private void GamesTab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
 
-            WindowUpdater.UpdateTextBlock(tblkSaveFileLocation, selectedGame.SaveFileLocation);
-            WindowUpdater.UpdateTextBlock(tblkUserSavesLocation, selectedGame.UserSavesLocation);
+            //Update save file location text.
+            string selectedGameSaveFileLocation = selectedGame.SaveFileDirectory == null ? "" : selectedGame.SaveFileDirectory.FullName;
+            WindowUpdater.UpdateTextBlock(tblkGameSaveFileDirectory, selectedGameSaveFileLocation);
+
+            //Update user game saves folder location text.
+            string selectedGameDirectory = selectedGame.Directory == null ? "" : selectedGame.Directory.FullName;
+            WindowUpdater.UpdateTextBlock(tblkGameDirectory, selectedGameDirectory);
         }
 
         private void BtnBrowseSaveFileLocation_Click(object sender, RoutedEventArgs e)
         {
             //Get the user chosen location for games savefile location.
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            folderBrowserDialog.ShowDialog();
-            string saveFileLocation = folderBrowserDialog.SelectedPath;
+            DialogResult dialogResult =  folderBrowserDialog.ShowDialog();
 
-            //Update the games save file location.
-            Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
-            selectedGame.SaveFileLocation = saveFileLocation;
-            WindowUpdater.UpdateTextBlock(tblkSaveFileLocation, saveFileLocation);
+            if(dialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
+
+                string saveFileLocation = folderBrowserDialog.SelectedPath;
+                selectedGame.SaveFileDirectory = new DirectoryInfo(saveFileLocation);
+                WindowUpdater.UpdateTextBlock(tblkGameSaveFileDirectory, saveFileLocation);
+            }       
         }
 
         private void BtnBrowseUserSavesFolderLocation_Click(object sender, RoutedEventArgs e)
         {
             //Get the user chosen location for folder.
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            folderBrowserDialog.ShowDialog();
-            string userGameSavesFolderLocation = folderBrowserDialog.SelectedPath;
+            DialogResult dialogResult = folderBrowserDialog.ShowDialog();
 
-            //Create folder and update selected game.
-            Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
-            System.IO.Directory.CreateDirectory(userGameSavesFolderLocation + "\\" + selectedGame.Name);
-            selectedGame.UserSavesLocation = userGameSavesFolderLocation;
-            WindowUpdater.UpdateTextBlock(tblkUserSavesLocation, userGameSavesFolderLocation);
+            if(dialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                //Get the location of where the folder should be.
+                string userSelectedLocation = folderBrowserDialog.SelectedPath;
+                Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
+                string newProfilesLocation = userSelectedLocation + "\\" + selectedGame.Name;
 
-            //System.Windows.MessageBox.Show("Blablah", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-        }
+                //If Current Game already has a directory) Get this directory and move it to the new location.
+                //Update the games directory.
+                if (selectedGame.Directory != null)
+                {
+                    //User doesn't select same location to move folder.
+                    if(selectedGame.Directory.FullName != newProfilesLocation)
+                    {
+                        //Crashes if user selects folder that is the selected game's directory. Fix**
+                        Directory.Move(selectedGame.Directory.FullName, newProfilesLocation);
+                        selectedGame.Directory = new DirectoryInfo(newProfilesLocation);
+                    }
+                }
+                //If the game doesn't have any directory just make a new one.
+                else
+                {
+                    selectedGame.Directory = System.IO.Directory.CreateDirectory(newProfilesLocation);
+                }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Hide();
+                WindowUpdater.UpdateTextBlock(tblkGameDirectory,newProfilesLocation);
+            }
         }
     }
 }

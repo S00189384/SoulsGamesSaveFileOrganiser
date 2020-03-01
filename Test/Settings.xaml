@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="Directory Settings" Height="353.117" Width="629.242" ResizeMode="NoResize" ShowInTaskbar="False" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="Directory Settings" Height="353.117" Width="629.242" ResizeMode="NoResize" ShowInTaskbar="False">
     <Grid>
         <TabControl x:Name="GamesTab" HorizontalAlignment="Left" Height="315" VerticalAlignment="Top" Width="613" SelectionChanged="GamesTab_SelectionChanged">
 
@@ -23,12 +23,12 @@
         <Border BorderThickness="1" HorizontalAlignment="Left" Height="265" Margin="10,40,0,0" VerticalAlignment="Top" Width="592" Background="#FFF5EAEA" BorderBrush="Black"/>
         <TextBlock x:Name="tblkSaveFileLocationHeader" HorizontalAlignment="Left" Margin="24,69,0,0" TextWrapping="Wrap" Text="SaveFile Directory:" VerticalAlignment="Top" Width="158" FontFamily="Calibri" Foreground="Black" FontSize="20"/>
         <Border BorderBrush = "Black" BorderThickness="1" HorizontalAlignment="Left" Height="55" Margin="24,97,0,0" VerticalAlignment="Top" Width="490" Background="White">
-            <TextBlock x:Name="tblkSaveFileLocation" TextWrapping = "Wrap" Margin="5,6,9,8" FontFamily="Calibri" FontSize="18"/>
+            <TextBlock x:Name="tblkGameSaveFileDirectory" TextWrapping = "Wrap" Margin="5,6,9,8" FontFamily="Calibri" FontSize="18"/>
         </Border>
         <Button x:Name="btnBrowseSaveFileLocation" Content="Browse" HorizontalAlignment="Left" Margin="519,97,0,0" VerticalAlignment="Top" Width="71" FontFamily="Poor Richard" Height="55" FontSize="18" BorderBrush="Black" Background="#FF4DFF0A" Foreground="Black" Click="BtnBrowseSaveFileLocation_Click"/>
-        <TextBlock x:Name="tblkSavefilesHeader" HorizontalAlignment="Left" Margin="24,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="254" FontFamily="Calibri" Foreground="Black" FontSize="20" Text="User SaveFile Folder Location:"/>
+        <TextBlock x:Name="tblkProfileDirectoryHeader" HorizontalAlignment="Left" Margin="24,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="254" FontFamily="Calibri" Foreground="Black" FontSize="20" Text="Profiles Directory:"/>
         <Border BorderBrush = "Black" BorderThickness="1" HorizontalAlignment="Left" Height="55" Margin="24,199,0,0" VerticalAlignment="Top" Width="490" Background="White">
-            <TextBlock x:Name="tblkUserSavesLocation" TextWrapping = "Wrap" Margin="9,3,-1,4" FontSize="18" FontFamily="Calibri"/>
+            <TextBlock x:Name="tblkGameDirectory" TextWrapping = "Wrap" Margin="9,3,-1,4" FontSize="18" FontFamily="Calibri"/>
         </Border>
         <Button x:Name="btnBrowseUserSavesFolderLocation" Content="Browse" HorizontalAlignment="Left" Margin="519,199,0,0" VerticalAlignment="Top" Width="71" FontFamily="Poor Richard" Height="55" FontSize="18" BorderBrush="Black" Background="#FF4DFF0A" Foreground="Black" Click="BtnBrowseUserSavesFolderLocation_Click"/>
     </Grid>

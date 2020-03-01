@@ -45,20 +45,24 @@ namespace Test
         //Start
         private void CreateGames()
         {
-            Game DemonsSouls = new Game("Demon's Souls", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Demon's Souls"));
+            Game DemonsSouls = new Game("Demon's Souls");
+            //here is where you would read from a file to get the games directory info.
+            DemonsSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Demon's Souls");
+            //DemonsSouls.SaveFileDirectory = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
             GamesList.Add(DemonsSouls);
 
-            Game DarkSouls = new Game("Dark Souls", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls"));
+            Game DarkSouls = new Game("Dark Souls");
+            DarkSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls");
             GamesList.Add(DarkSouls);
 
-            Game DarkSoulsRemastered = new Game("Dark Souls Remastered", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls Remastered"));
-            GamesList.Add(DarkSoulsRemastered);
+            //Game DarkSoulsRemastered = new Game("Dark Souls Remastered", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls Remastered"));
+            //GamesList.Add(DarkSoulsRemastered);
 
-            Game DarkSouls2 = new Game("Dark Souls 2", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls 2"));
-            GamesList.Add(DarkSouls2);
+            //Game DarkSouls2 = new Game("Dark Souls 2", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls 2"));
+            //GamesList.Add(DarkSouls2);
 
-            Game DarkSouls3 = new Game("Dark Souls 3", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls 3"));
-            GamesList.Add(DarkSouls3);
+            //Game DarkSouls3 = new Game("Dark Souls 3", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls 3"));
+            //GamesList.Add(DarkSouls3);
 
             comboBoxGame.ItemsSource = GamesList;
             comboBoxGame.SelectedIndex = 0;
@@ -69,30 +73,35 @@ namespace Test
             //For each game.
             for (int g = 0; g < GamesList.Count; g++)
             {
-                //Categories in each game.
-                string[] categoriesInGame = System.IO.Directory.GetDirectories(GamesList[g].directoryInfo.FullName);
-                for (int c = 0; c < categoriesInGame.Length; c++)
+                //Read from somewhere to get the games directory if any.
+
+                if(GamesList[g].Directory != null)
                 {
-                    Category currentCategory = new Category(System.IO.Path.GetFileName(categoriesInGame[c]), new DirectoryInfo(categoriesInGame[c]));
-                    GamesList[g].Categories.Add(currentCategory);
-
-                    //Segments in each category.
-                    string[] segmentsInCategory = System.IO.Directory.GetDirectories(currentCategory.directoryInfo.FullName);
-
-                    for (int s = 0; s < segmentsInCategory.Length; s++)
+                    //Categories in each game.
+                    string[] categoriesInGame = System.IO.Directory.GetDirectories(GamesList[g].Directory.FullName);
+                    for (int c = 0; c < categoriesInGame.Length; c++)
                     {
-                        Segment currentSegment = new Segment(System.IO.Path.GetFileName(segmentsInCategory[s]), new DirectoryInfo(segmentsInCategory[s]), currentCategory);
-                        currentCategory.segments.Add(currentSegment);
+                        Category currentCategory = new Category(System.IO.Path.GetFileName(categoriesInGame[c]), new DirectoryInfo(categoriesInGame[c]));
+                        GamesList[g].Categories.Add(currentCategory);
 
-                        //Savefiles in each segment.
-                        string[] saveFilesInSegment = System.IO.Directory.GetDirectories(currentSegment.directoryInfo.FullName);
-                        for (int x = 0; x < saveFilesInSegment.Length; x++)
+                        //Segments in each category.
+                        string[] segmentsInCategory = System.IO.Directory.GetDirectories(currentCategory.Directory.FullName);
+
+                        for (int s = 0; s < segmentsInCategory.Length; s++)
                         {
-                            Savefile currentSavefile = new Savefile(System.IO.Path.GetFileName(saveFilesInSegment[x]), new DirectoryInfo(saveFilesInSegment[x]), currentSegment);
-                            currentSegment.savefiles.Add(currentSavefile);
+                            Segment currentSegment = new Segment(System.IO.Path.GetFileName(segmentsInCategory[s]), new DirectoryInfo(segmentsInCategory[s]), currentCategory);
+                            currentCategory.Segments.Add(currentSegment);
+
+                            //Savefiles in each segment.
+                            string[] saveFilesInSegment = System.IO.Directory.GetDirectories(currentSegment.Directory.FullName);
+                            for (int x = 0; x < saveFilesInSegment.Length; x++)
+                            {
+                                Savefile currentSavefile = new Savefile(System.IO.Path.GetFileName(saveFilesInSegment[x]), new DirectoryInfo(saveFilesInSegment[x]), currentSegment);
+                                currentSegment.Savefiles.Add(currentSavefile);
+                            }
                         }
                     }
-                }
+                }               
             }
         }
 
@@ -113,26 +122,27 @@ namespace Test
         {
             if (comboBoxCategory.SelectedIndex != -1)
             {
-                WindowUpdater.RefreshListBox(lstboxSegments, GetSelectedCategory().segments);
+                WindowUpdater.RefreshListBox(lstboxSegments, GetSelectedCategory().Segments);
                 WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
             }
         }
         private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
-            if (!CanUserCreateObject(typeof(Category), GetSelectedGame().Categories, txboxCreateCategory))
+            if (!UserCanCreateObject(typeof(Category), GetSelectedGame().Categories, txboxCreateCategory))
                 return;
 
             //Create category and folder.
             Game selectedGame = GetSelectedGame();
             string nameOfNewCategory = txboxCreateCategory.Text;
 
-            Category newCategory = new Category(nameOfNewCategory, System.IO.Directory.CreateDirectory(selectedGame.directoryInfo.FullName + "\\" + nameOfNewCategory));
+            Category newCategory = new Category(nameOfNewCategory, System.IO.Directory.CreateDirectory(selectedGame.Directory.FullName + "\\" + nameOfNewCategory));
             selectedGame.Categories.Add(newCategory);
 
             //Update window.
             WindowUpdater.RefreshComboBox(comboBoxCategory, selectedGame.Categories);
             UpdateNotificationMessage("Category added.", TypeOfNotificationMessage.Success);
             WindowUpdater.UpdateTextBox(txboxCreateCategory, "");
+            comboBoxCategory.SelectedIndex = selectedGame.Categories.IndexOf(newCategory);
         }
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
@@ -141,7 +151,7 @@ namespace Test
 
             //Delete Category and Folder with all its content.
             Category categoryToDelete = GetSelectedCategory();
-            System.IO.Directory.Delete(categoryToDelete.directoryInfo.FullName, true);
+            System.IO.Directory.Delete(categoryToDelete.Directory.FullName, true);
             GetSelectedGame().Categories.Remove(categoryToDelete);
             categoryToDelete = null;
 
@@ -150,21 +160,23 @@ namespace Test
             WindowUpdater.RefreshListBox<Segment>(lstboxSegments, null);
             WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
             UpdateNotificationMessage("Category Deleted.", TypeOfNotificationMessage.Success);
+
+            //Maybe select category above one deleted if any. Atm combo box has nothing selected when you delete.
         }
         //Segments.
         private void BtnCreateSegment_Click(object sender, RoutedEventArgs e)
         {
-            if (!CanUserCreateObject(typeof(Segment), GetSelectedSegments(), txboxCreateSegment))
+            if (!UserCanCreateObject(typeof(Segment), GetSelectedSegments(), txboxCreateSegment))
                 return;
 
             //Create new segment and folder.
             Category selectedCategory = GetSelectedCategory();
-            Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(GetSelectedGame().directoryInfo.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text), selectedCategory);
-            selectedCategory.segments.Add(newSegment);
+            Segment newSegment = new Segment(txboxCreateSegment.Text, System.IO.Directory.CreateDirectory(GetSelectedGame().Directory.FullName + "\\" + selectedCategory.Name + "\\" + txboxCreateSegment.Text), selectedCategory);
+            selectedCategory.Segments.Add(newSegment);
 
             //Update window.
-            WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.segments);
-            WindowUpdater.RefreshListBox(lstBoxSavefiles, newSegment.savefiles);
+            WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.Segments);
+            WindowUpdater.RefreshListBox(lstBoxSavefiles, newSegment.Savefiles);
             WindowUpdater.UpdateTextBox(txboxCreateSegment, "");
             UpdateNotificationMessage("Segment Created.", TypeOfNotificationMessage.Success);
         }
@@ -185,11 +197,11 @@ namespace Test
             Segment segmentToDelete = GetSelectedSegment();
 
             //Delete segment and folder.
-            System.IO.Directory.Delete(segmentToDelete.directoryInfo.FullName, true);
-            selectedCategory.segments.Remove(segmentToDelete);
+            System.IO.Directory.Delete(segmentToDelete.Directory.FullName, true);
+            selectedCategory.Segments.Remove(segmentToDelete);
 
             //Refresh window.
-            WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.segments);
+            WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.Segments);
             WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
             UpdateNotificationMessage("Segment Deleted.", TypeOfNotificationMessage.Success);
         }
@@ -197,52 +209,57 @@ namespace Test
         //Saves. 
         private void BtnCreateSavefile_Click(object sender, RoutedEventArgs e)
         {
-            if (!CanUserCreateObject(typeof(Savefile), GetSelectedSavefiles(), txboxSavefileName))
-                return;
+            if (GameHasSaveFileDirectory(GetSelectedGame()) && UserCanCreateObject(typeof(Savefile), GetSelectedSavefiles(), txboxSavefileName))
+            {
+                //Create savefile and folder.
+                Segment selectedSegment = GetSelectedSegment();
+                Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.Directory.FullName + "\\" + txboxSavefileName.Text), selectedSegment);
+                selectedSegment.Savefiles.Add(newSaveFile);
+                CreateSaveFile(newSaveFile);
 
-            //Create savefile and folder.
-            Segment selectedSegment = GetSelectedSegment();
-            Savefile newSaveFile = new Savefile(txboxSavefileName.Text, System.IO.Directory.CreateDirectory(selectedSegment.directoryInfo.FullName + "\\" + txboxSavefileName.Text), selectedSegment);
-            selectedSegment.savefiles.Add(newSaveFile);
-            CreateSaveFile(newSaveFile);
-
-            //Update Window.
-            WindowUpdater.RefreshListBox(lstBoxSavefiles, selectedSegment.savefiles);
-            WindowUpdater.UpdateTextBox(txboxSavefileName, "");
-            UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
+                //Update Window.
+                WindowUpdater.RefreshListBox(lstBoxSavefiles, selectedSegment.Savefiles);
+                WindowUpdater.UpdateTextBox(txboxSavefileName, "");
+                UpdateNotificationMessage("Savefile created.", TypeOfNotificationMessage.Success);
+            }
         }
         private void BtnImportSavestate_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsItemSelected(typeof(Savefile)))
-                return;
-
-            //Delete files in actual savefile location.
-            foreach (FileInfo file in saveFileLocation.GetFiles())
+            if (GameHasSaveFileDirectory(GetSelectedGame()) && IsItemSelected(typeof(Savefile)))
             {
-                file.Delete();
-            }
+                //Delete files in actual savefile location.
+                foreach (FileInfo file in GetSelectedGame().SaveFileDirectory.GetFiles())
+                {
+                    file.Delete();
+                }
 
-            //Add new savefile.
-            ImportSavestate(GetSelectedSavefile());
-            UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
+                //Add new savefile.
+                ImportSavestate(GetSelectedSavefile());
+                UpdateNotificationMessage("Save imported to game.", TypeOfNotificationMessage.Success);
+            }
         }
         private void ImportSavestate(Savefile savefile)
         {
-            string[] files = System.IO.Directory.GetFiles(savefile.directoryInfo.FullName);
-
-            foreach (string nameoffile in files)
+            if(GameHasSaveFileDirectory(GetSelectedGame()))
             {
-                //Get file name.
-                string fileName = System.IO.Path.GetFileName(nameoffile);
-                //Combines folder location (DeS Folder) and file name (Emulator Folder)
-                string destFile = System.IO.Path.Combine(saveFileLocation.FullName, fileName);
-                //Copy method needs exact location of source file (Emulator folder) and destination file(Des Folder) and copies file here.
-                System.IO.File.Copy(nameoffile, destFile, true);
+                string[] files = System.IO.Directory.GetFiles(savefile.Directory.FullName);
+
+                foreach (string nameoffile in files)
+                {
+                    //Get file name.
+                    string fileName = System.IO.Path.GetFileName(nameoffile);
+                    //Combines folder location (DeS Folder) and file name (Emulator Folder)
+                    string destFile = System.IO.Path.Combine(GetSelectedGame().SaveFileDirectory.FullName, fileName);
+                    //Copy method needs exact location of source file (Emulator folder) and destination file(Des Folder) and copies file here.
+                    System.IO.File.Copy(nameoffile, destFile, true);
+                }
             }
         }
         private void CreateSaveFile(Savefile savefile)
         {
-            string[] files = System.IO.Directory.GetFiles(saveFileLocation.FullName);
+            Game selectedGame = GetSelectedGame();
+
+            string[] files = System.IO.Directory.GetFiles(selectedGame.SaveFileDirectory.FullName);
 
             // Copy the files and overwrite destination files if they already exist. 
             foreach (string nameoffile in files)
@@ -250,33 +267,33 @@ namespace Test
                 //Get name and extension.
                 string fileName = System.IO.Path.GetFileName(nameoffile);
                 //Combines folder location (DeS Folder) and file name (Emulator Folder)
-                string destFile = System.IO.Path.Combine(savefile.directoryInfo.FullName, fileName);
+                string destFile = System.IO.Path.Combine(savefile.Directory.FullName, fileName);
                 //Copy method needs exact location of source file (Emulator folder) and destination file(Des Folder) and copies file here.
                 System.IO.File.Copy(nameoffile, destFile, true);
             }
         }
         private void BtnUpdateSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsItemSelected(typeof(Savefile)))
-                return;
-
-            //Update savefile.
-            CreateSaveFile(GetSelectedSavefile());
-            UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
+            if (GameHasSaveFileDirectory(GetSelectedGame()) && IsItemSelected(typeof(Savefile)))
+            {
+                //Update savefile.
+                CreateSaveFile(GetSelectedSavefile());
+                UpdateNotificationMessage("Savefile updated.", TypeOfNotificationMessage.Success);
+            }        
         }
         private void BtnDeleteSavefile1_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsItemSelected(typeof(Savefile)))
-                return;
+            if (IsItemSelected(typeof(Savefile)))
+            {
+                //Delete savefile.
+                Savefile selectedSavefile = GetSelectedSavefile();
+                System.IO.Directory.Delete(selectedSavefile.Directory.FullName, true);
+                GetSelectedSegment().Savefiles.Remove(selectedSavefile);
 
-            //Delete savefile.
-            Savefile selectedSavefile = GetSelectedSavefile();
-            System.IO.Directory.Delete(selectedSavefile.directoryInfo.FullName, true);
-            GetSelectedSegment().savefiles.Remove(selectedSavefile);
-
-            //Refresh window.
-            WindowUpdater.RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
-            UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
+                //Refresh window.
+                WindowUpdater.RefreshListBox(lstBoxSavefiles, GetSelectedSavefiles());
+                UpdateNotificationMessage("Savefile deleted.", TypeOfNotificationMessage.Success);
+            }
         }
 
         //Getting selected games, savefiles, segments, categories.
@@ -286,11 +303,11 @@ namespace Test
         }
         private Savefile GetSelectedSavefile()
         {
-            return GamesList[comboBoxGame.SelectedIndex].Categories[comboBoxCategory.SelectedIndex].segments[lstboxSegments.SelectedIndex].savefiles[lstBoxSavefiles.SelectedIndex];
+            return GamesList[comboBoxGame.SelectedIndex].Categories[comboBoxCategory.SelectedIndex].Segments[lstboxSegments.SelectedIndex].Savefiles[lstBoxSavefiles.SelectedIndex];
         }
         private Segment GetSelectedSegment()
         {
-            return GamesList[comboBoxGame.SelectedIndex].Categories[comboBoxCategory.SelectedIndex].segments[lstboxSegments.SelectedIndex];
+            return GamesList[comboBoxGame.SelectedIndex].Categories[comboBoxCategory.SelectedIndex].Segments[lstboxSegments.SelectedIndex];
         }
         private Category GetSelectedCategory()
         {
@@ -298,11 +315,11 @@ namespace Test
         }
         private List<Segment> GetSelectedSegments()
         {
-            return comboBoxCategory.SelectedIndex == -1 ? new List<Segment>() : GetSelectedCategory().segments;
+            return comboBoxCategory.SelectedIndex == -1 ? new List<Segment>() : GetSelectedCategory().Segments;
         }
         private List<Savefile> GetSelectedSavefiles()
         {
-            return comboBoxCategory.SelectedIndex == -1 || lstboxSegments.SelectedIndex == -1 ? new List<Savefile>() : GetSelectedSegment().savefiles;
+            return comboBoxCategory.SelectedIndex == -1 || lstboxSegments.SelectedIndex == -1 ? new List<Savefile>() : GetSelectedSegment().Savefiles;
         }
 
         //Notifications / Descriptions.
@@ -401,25 +418,6 @@ namespace Test
         }
 
         //Updating window.
-        //private void UpdateTextBlock(TextBlock textBlock,string message)
-        //{
-        //    textBlock.Text = message;
-        //}
-        //private void UpdateTextBox(TextBox textBox, string message)
-        //{
-        //    textBox.Text = message;
-        //}
-        //private void RefreshListBox<T>(ListBox listBoxToRefresh,List<T> listToShow)
-        //{
-        //    listBoxToRefresh.ItemsSource = null;
-        //    listBoxToRefresh.ItemsSource = listToShow;
-        //}
-        //private void RefreshComboBox<T>(ComboBox comboBoxToRefresh,List<T> listToShow)
-        //{
-        //    comboBoxToRefresh.ItemsSource = null;
-        //    comboBoxToRefresh.ItemsSource = listToShow;
-        //}
-
         private void UpdateBackgroundPicture()
         {
             //Background images are indexed to represent the souls games 0 - Demon's Souls / 1 - Dark Souls etc.
@@ -433,8 +431,14 @@ namespace Test
         }
 
         //Making program not crash if user hasn't correct objects selected.
-        private bool CanUserCreateObject<T>(Type typeOfObject, List<T> listToCheck, TextBox textBoxWithObjectName)
+        private bool UserCanCreateObject<T>(Type typeOfObject, List<T> listToCheck, TextBox textBoxWithObjectName)
         {
+            if(GetSelectedGame().Directory == null)
+            {
+                System.Windows.MessageBox.Show("Before you create a " + typeOfObject.Name.ToLower() + " you need to select a location for where you want to store the savefiles. You can do this in settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                return false;
+            }
+
             //Check if correct selections have been made.
             if (typeOfObject == typeof(Category))
             {
@@ -518,12 +522,25 @@ namespace Test
                 return false;
             }
 
-            //If all checks are successfull return true.
+            //If all checks are successful return true.
+            return true;
+        }
+        private bool GameHasSaveFileDirectory(Game gameToCheck)
+        {
+            bool GameHasSaveDirectory = gameToCheck.SaveFileDirectory != null;
+
+            if(!GameHasSaveDirectory)
+            {
+                System.Windows.MessageBox.Show("You have to select a folder where the savefiles for " + gameToCheck.Name + " is located. You can do this in settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                return false;
+            }
+
             return true;
         }
 
         private void BtnEditSettings_Click(object sender, RoutedEventArgs e)
         {
+            settingsWindow = new Settings(this);
             settingsWindow.Show();
         }
     }
