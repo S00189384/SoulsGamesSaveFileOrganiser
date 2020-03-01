@@ -39,9 +39,9 @@ namespace Test
             WindowUpdater.UpdateTextBlock(tblkGameDirectory, selectedGameDirectory);
         }
 
+
         private void BtnBrowseSaveFileLocation_Click(object sender, RoutedEventArgs e)
         {
-            //Get the user chosen location for games savefile location.
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             DialogResult dialogResult =  folderBrowserDialog.ShowDialog();
 
@@ -55,13 +55,12 @@ namespace Test
             }       
         }
 
-        private void BtnBrowseUserSavesFolderLocation_Click(object sender, RoutedEventArgs e)
+        private void BtnBrowseGameProfilesDirectory_Click(object sender, RoutedEventArgs e)
         {
-            //Get the user chosen location for folder.
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             DialogResult dialogResult = folderBrowserDialog.ShowDialog();
 
-            if(dialogResult == System.Windows.Forms.DialogResult.OK)
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
             {
                 //Get the location of where the folder should be.
                 string userSelectedLocation = folderBrowserDialog.SelectedPath;
@@ -73,7 +72,7 @@ namespace Test
                 if (selectedGame.Directory != null)
                 {
                     //User doesn't select same location to move folder.
-                    if(selectedGame.Directory.FullName != newProfilesLocation)
+                    if (selectedGame.Directory.FullName != newProfilesLocation)
                     {
                         //Crashes if user selects folder that is the selected game's directory. Fix**
                         Directory.Move(selectedGame.Directory.FullName, newProfilesLocation);
@@ -86,7 +85,7 @@ namespace Test
                     selectedGame.Directory = System.IO.Directory.CreateDirectory(newProfilesLocation);
                 }
 
-                WindowUpdater.UpdateTextBlock(tblkGameDirectory,newProfilesLocation);
+                WindowUpdater.UpdateTextBlock(tblkGameDirectory, newProfilesLocation);
             }
         }
     }

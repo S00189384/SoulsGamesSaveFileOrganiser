@@ -30,6 +30,6 @@
         <Border BorderBrush = "Black" BorderThickness="1" HorizontalAlignment="Left" Height="55" Margin="24,199,0,0" VerticalAlignment="Top" Width="490" Background="White">
             <TextBlock x:Name="tblkGameDirectory" TextWrapping = "Wrap" Margin="9,3,-1,4" FontSize="18" FontFamily="Calibri"/>
         </Border>
-        <Button x:Name="btnBrowseUserSavesFolderLocation" Content="Browse" HorizontalAlignment="Left" Margin="519,199,0,0" VerticalAlignment="Top" Width="71" FontFamily="Poor Richard" Height="55" FontSize="18" BorderBrush="Black" Background="#FF4DFF0A" Foreground="Black" Click="BtnBrowseUserSavesFolderLocation_Click"/>
+        <Button x:Name="btnBrowseGameProfilesDirectory" Content="Browse" HorizontalAlignment="Left" Margin="519,199,0,0" VerticalAlignment="Top" Width="71" FontFamily="Poor Richard" Height="55" FontSize="18" BorderBrush="Black" Background="#FF4DFF0A" Foreground="Black" Click="BtnBrowseGameProfilesDirectory_Click"/>
     </Grid>
 </Window>
