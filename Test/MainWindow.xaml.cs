@@ -47,12 +47,12 @@ namespace Test
         {
             Game DemonsSouls = new Game("Demon's Souls");
             //here is where you would read from a file to get the games directory info.
-            DemonsSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Demon's Souls");
+            //DemonsSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Demon's Souls");
             //DemonsSouls.SaveFileDirectory = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
             GamesList.Add(DemonsSouls);
 
             Game DarkSouls = new Game("Dark Souls");
-            DarkSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls");
+            //DarkSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls");
             GamesList.Add(DarkSouls);
 
             //Game DarkSoulsRemastered = new Game("Dark Souls Remastered", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls Remastered"));
@@ -113,7 +113,7 @@ namespace Test
                 WindowUpdater.RefreshComboBox(comboBoxCategory, GetSelectedGame().Categories);
                 WindowUpdater.RefreshListBox<Segment>(lstboxSegments, null);
                 WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
-                UpdateBackgroundPicture();
+                //UpdateBackgroundPicture();
             }
         }
 

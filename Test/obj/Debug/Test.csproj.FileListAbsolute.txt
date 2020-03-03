@@ -44,3 +44,5 @@ C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.pdb
 C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Test.csprojAssemblyReference.cache
 D:\Games Programming\EmulatorSaves\Test\obj\Debug\Settings.g.cs
 D:\Games Programming\EmulatorSaves\Test\obj\Debug\Settings.baml
+C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Settings.g.cs
+C:\Users\s00189384\Documents\GitHub\EmulatorSaves\Test\obj\Debug\Settings.baml
