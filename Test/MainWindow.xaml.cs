@@ -13,11 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Test
 {
     public partial class MainWindow : Window
     {
+        //Json info.
+        string jsonFileName = "gameinfo.json";
+
+
         enum TypeOfNotificationMessage
         {
             Success, //0
@@ -25,9 +31,6 @@ namespace Test
         }
         Settings settingsWindow;
 
-
-        //System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
-        //System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\FakeSaveFileLocation");
         System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         DirectoryInfo mainFolder;
@@ -39,6 +42,7 @@ namespace Test
             settingsWindow = new Settings(this);
             mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Save File Organiser");
             CreateGames();
+            UpdateGameDirectories();
             ImportCreatedSavefiles();
         }
 
@@ -51,22 +55,50 @@ namespace Test
             //DemonsSouls.SaveFileDirectory = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
             GamesList.Add(DemonsSouls);
 
+
             Game DarkSouls = new Game("Dark Souls");
             //DarkSouls.Directory = System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls");
             GamesList.Add(DarkSouls);
 
-            //Game DarkSoulsRemastered = new Game("Dark Souls Remastered", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls Remastered"));
-            //GamesList.Add(DarkSoulsRemastered);
+            Game DarkSoulsRemastered = new Game("Dark Souls Remastered");
+            GamesList.Add(DarkSoulsRemastered);
 
-            //Game DarkSouls2 = new Game("Dark Souls 2", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls 2"));
-            //GamesList.Add(DarkSouls2);
+            Game DarkSouls2 = new Game("Dark Souls 2");
+            GamesList.Add(DarkSouls2);
 
-            //Game DarkSouls3 = new Game("Dark Souls 3", System.IO.Directory.CreateDirectory(mainFolder.FullName + "\\" + "Dark Souls 3"));
-            //GamesList.Add(DarkSouls3);
+            Game DarkSouls3 = new Game("Dark Souls 3");
+            GamesList.Add(DarkSouls3);
 
             comboBoxGame.ItemsSource = GamesList;
             comboBoxGame.SelectedIndex = 0;
             
+        }
+        private void UpdateGameDirectories()
+        {
+            //Maybe instead of exists check if the length of the file is 0 - if you want the json file to be in the folder by default.
+
+            if(File.Exists(jsonFileName)) //User has already run program - update directories.
+            {
+                string jsonContents = File.ReadAllText(jsonFileName);
+                JArray jsonArray = JArray.Parse(jsonContents);
+
+                for (int i = 0; i < jsonArray.Count; i++)
+                {
+                    string gameProfilesDirectory = jsonArray[i]["Directory"].ToString();
+                    string gameSavesDirectory = jsonArray[i]["SaveFileDirectory"].ToString();
+
+                    if (gameProfilesDirectory != "")
+                        GamesList[i].Directory = new DirectoryInfo(gameProfilesDirectory);
+
+                    if(gameSavesDirectory != "")
+                        GamesList[i].SaveFileDirectory = new DirectoryInfo(gameSavesDirectory);
+                }
+            }
+            else //First time user started program - create json file.
+            {
+                string json = JsonConvert.SerializeObject(GamesList.ToArray());
+                File.WriteAllText(jsonFileName, json);
+            }
         }
         private void ImportCreatedSavefiles()
         {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,8 +40,6 @@ namespace Test
             string selectedGameDirectory = selectedGame.Directory == null ? "" : selectedGame.Directory.FullName;
             WindowUpdater.UpdateTextBlock(tblkGameDirectory, selectedGameDirectory);
         }
-
-
         private void BtnBrowseSaveFileLocation_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
@@ -51,10 +51,20 @@ namespace Test
 
                 string saveFileLocation = folderBrowserDialog.SelectedPath;
                 selectedGame.SaveFileDirectory = new DirectoryInfo(saveFileLocation);
+
+                //Updating the new save file location in the json file. 
+
+                //string jsonContents = JsonConvert.SerializeObject(mainWindow.GamesList.ToArray(),Formatting.Indented, new JsonSerializerSettings{PreserveReferencesHandling = PreserveReferencesHandling.Objects});
+                //JArray jsonArray = JArray.Parse(jsonContents);
+                //int indexOfGame = mainWindow.GamesList.IndexOf(selectedGame);
+                //jsonArray[indexOfGame]["SaveFileDirectory"] = saveFileLocation.Replace(@"\","\\");
+                //File.WriteAllText("gameinfo.json", string.Empty);
+                //File.WriteAllText("gameinfo.json", jsonArray.ToString());
+
+                JsonGameInfo.UpdateFolderPathInJsonFile(mainWindow.GamesList, selectedGame, "SaveFileDirectory", saveFileLocation);
                 WindowUpdater.UpdateTextBlock(tblkGameSaveFileDirectory, saveFileLocation);
             }       
         }
-
         private void BtnBrowseGameProfilesDirectory_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
@@ -85,6 +95,7 @@ namespace Test
                     selectedGame.Directory = System.IO.Directory.CreateDirectory(newProfilesLocation);
                 }
 
+                JsonGameInfo.UpdateFolderPathInJsonFile(mainWindow.GamesList, selectedGame, "Directory", newProfilesLocation);
                 WindowUpdater.UpdateTextBlock(tblkGameDirectory, newProfilesLocation);
             }
         }
