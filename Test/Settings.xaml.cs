@@ -18,6 +18,16 @@ using System.Windows.Shapes;
 
 namespace Test
 {
+    /* Settings window where user can choose where they want to store the directories for each game
+     * Each game has two directories -
+     * One is the folder where the save file is located - the game reads from this folder and updates it to change the games savestate. 
+     * The user would have to research where this folder is in the games files themselves.
+     * 
+     * The other is the "profiles" directory -  where all the different savefiles the user copies over from the savefile folder to folders named and created by themselves.
+     * They can easily move savestates in any of these folders to the games savefile folder to update the savestate in game.     
+     * 
+     * Whole settings window would have to be changed if user had option of adding their own games and not just having the souls games to choose from but it works for now
+         */
     public partial class Settings : Window
     {
         MainWindow mainWindow;
@@ -42,6 +52,7 @@ namespace Test
         }
         private void BtnBrowseSaveFileLocation_Click(object sender, RoutedEventArgs e)
         {
+            //Ask user for folder where the games savefile is located.
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             DialogResult dialogResult =  folderBrowserDialog.ShowDialog();
 
@@ -52,21 +63,13 @@ namespace Test
                 string saveFileLocation = folderBrowserDialog.SelectedPath;
                 selectedGame.SaveFileDirectory = new DirectoryInfo(saveFileLocation);
 
-                //Updating the new save file location in the json file. 
-
-                //string jsonContents = JsonConvert.SerializeObject(mainWindow.GamesList.ToArray(), Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
-                //JArray jsonArray = JArray.Parse(jsonContents);
-                //int indexOfGame = mainWindow.GamesList.IndexOf(selectedGame);
-                //jsonArray[indexOfGame]["SaveFileDirectory"] = saveFileLocation.Replace(@"\", "\\");
-                //File.WriteAllText("gameinfo.json", string.Empty);
-                //File.WriteAllText("gameinfo.json", jsonArray.ToString());
-
-                JsonGameInfo.UpdateFolderPathInJsonFile(mainWindow.GamesList, selectedGame, "SaveFileDirectory", saveFileLocation);
+                JsonDirectoryInfoFile.UpdateFolderPathInJsonFile(mainWindow.GamesList, selectedGame, "SaveFileDirectory", saveFileLocation);
                 WindowUpdater.UpdateTextBlock(tblkGameSaveFileDirectory, saveFileLocation);
             }       
         }
         private void BtnBrowseGameProfilesDirectory_Click(object sender, RoutedEventArgs e)
         {
+            //Ask user for folder where the save profiles will be.
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             DialogResult dialogResult = folderBrowserDialog.ShowDialog();
 
@@ -95,7 +98,8 @@ namespace Test
                     selectedGame.Directory = System.IO.Directory.CreateDirectory(newProfilesLocation);
                 }
 
-                JsonGameInfo.UpdateFolderPathInJsonFile(mainWindow.GamesList, selectedGame, "Directory", newProfilesLocation);
+                //Update json file and settings window.
+                JsonDirectoryInfoFile.UpdateFolderPathInJsonFile(mainWindow.GamesList, selectedGame, "Directory", newProfilesLocation);
                 WindowUpdater.UpdateTextBlock(tblkGameDirectory, newProfilesLocation);
             }
         }

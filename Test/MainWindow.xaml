@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="DeS Emulator Save File Organiser" Height="464.356" Width="730.051" ResizeMode="NoResize">
+        Title="DeS Emulator Save File Organiser" Height="464.356" Width="730.051" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid x:Name="GridBackground" Margin="0,0,-6,-1" RenderTransformOrigin="0.5,0.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -68,7 +68,7 @@
             </ComboBox.Background>
         </ComboBox>
 
-        <Button x:Name="btnEditSettings" Click="BtnEditSettings_Click" Margin="678,369,10,19">
+        <Button x:Name="btnEditSettings" Click="BtnEditSettings_Click" Margin="660,0,10,-2" Background="{x:Null}" BorderBrush="White" Foreground="Black" Height="76" VerticalAlignment="Bottom" MouseEnter="BtnEditSettings_MouseEnter" MouseLeave="BtnEditSettings_MouseLeave">
             <Button.Template>
                 <ControlTemplate>
                     <Ellipse HorizontalAlignment="Left" Height="45" Margin="0,0,0,0" VerticalAlignment="Top" Width="45">

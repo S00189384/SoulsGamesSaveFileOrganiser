@@ -20,32 +20,32 @@ namespace Test
 {
     public partial class MainWindow : Window
     {
-        //Json info.
-        string jsonFileName = "gameinfo.json";
-
-
         enum TypeOfNotificationMessage
         {
             Success, //0
             Error //1
         }
+        private int notificationMessageShowTimeInMilliseconds = 3500;
         Settings settingsWindow;
-
-        System.IO.DirectoryInfo saveFileLocation = new DirectoryInfo(@"C:\Users\Shane\Desktop\Emulator\dev_hdd0\home\00000001\savedata\BLUS30443DEMONSS005");
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-        DirectoryInfo mainFolder;
         public List<Game> GamesList = new List<Game>();
 
-        public MainWindow()
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             InitializeComponent();
             settingsWindow = new Settings(this);
-            mainFolder = System.IO.Directory.CreateDirectory(desktopPath + "\\Save File Organiser");
             CreateGames();
-            //UpdateGameDirectories();
-            JsonGameInfo.UpdateGameDirectories(GamesList);
+            JsonDirectoryInfoFile.UpdateGameDirectories(GamesList);
             ImportCreatedSavefiles();
         }
+
+        //public MainWindow()
+        //{
+        //    InitializeComponent();
+        //    settingsWindow = new Settings(this);
+        //    CreateGames();
+        //    JsonDirectoryInfoFile.UpdateGameDirectories(GamesList);
+        //    ImportCreatedSavefiles();
+        //}
 
         //Start
         private void CreateGames()
@@ -69,40 +69,11 @@ namespace Test
             comboBoxGame.SelectedIndex = 0;
             
         }
-        //private void UpdateGameDirectories()
-        //{
-        //    //Maybe instead of exists check if the length of the file is 0 - if you want the json file to be in the folder by default.
-
-        //    if(File.Exists(jsonFileName)) //User has already run program - update directories.
-        //    {
-        //        string jsonContents = File.ReadAllText(jsonFileName);
-        //        JArray jsonArray = JArray.Parse(jsonContents);
-
-        //        for (int i = 0; i < jsonArray.Count; i++)
-        //        {
-        //            string gameProfilesDirectory = jsonArray[i]["directoryName"].ToString();
-        //            string gameSavesDirectory = jsonArray[i]["saveFileDirectoryName"].ToString();
-
-        //            if (gameProfilesDirectory != "")
-        //                GamesList[i].Directory = new DirectoryInfo(gameProfilesDirectory);
-
-        //            if(gameSavesDirectory != "")
-        //                GamesList[i].SaveFileDirectory = new DirectoryInfo(gameSavesDirectory);
-        //        }
-        //    }
-        //    else //First time user started program - create json file.
-        //    {
-        //        string json = JsonConvert.SerializeObject(GamesList.ToArray());
-        //        File.WriteAllText(jsonFileName, json);
-        //    }
-        //}
         private void ImportCreatedSavefiles()
         {
             //For each game.
             for (int g = 0; g < GamesList.Count; g++)
             {
-                //Read from somewhere to get the games directory if any.
-
                 if(GamesList[g].Directory != null)
                 {
                     //Categories in each game.
@@ -141,7 +112,7 @@ namespace Test
                 WindowUpdater.RefreshComboBox(comboBoxCategory, GetSelectedGame().Categories);
                 WindowUpdater.RefreshListBox<Segment>(lstboxSegments, null);
                 WindowUpdater.RefreshListBox<Savefile>(lstBoxSavefiles, null);
-                //UpdateBackgroundPicture();
+                UpdateBackgroundPicture();
             }
         }
 
@@ -203,6 +174,7 @@ namespace Test
             selectedCategory.Segments.Add(newSegment);
 
             //Update window.
+            lstboxSegments.SelectedIndex = selectedCategory.Segments.IndexOf(newSegment);
             WindowUpdater.RefreshListBox(lstboxSegments, selectedCategory.Segments);
             WindowUpdater.RefreshListBox(lstBoxSavefiles, newSegment.Savefiles);
             WindowUpdater.UpdateTextBox(txboxCreateSegment, "");
@@ -359,14 +331,13 @@ namespace Test
 
             //Update the text and colour.
             tblkNotificationMessage.Text = message;
-
             if (typeOfMessage == TypeOfNotificationMessage.Success)
                 tblkNotificationMessage.Foreground = new SolidColorBrush(Colors.Green);
             else
                 tblkNotificationMessage.Foreground = new SolidColorBrush(Colors.Red);
 
             //Wait for 3.5 seconds. 
-            await Task.Delay(3500);
+            await Task.Delay(notificationMessageShowTimeInMilliseconds);
 
             //If the user didn't press another button - i.e the text stays the same then reset the notification message.
             if (message == tblkNotificationMessage.Text)
@@ -381,16 +352,15 @@ namespace Test
         //Button mouse over / exit - shows and hides description of what button does.
         private void BtnCreateSegment_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Creates segment where savefiles can be added.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Creates segment where savefiles can be added.");
         }
         private void BtnCreateSegment_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
-
         }
         private void BtnCreateSavefile_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Creates savefile based on current savestates in game.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Creates savefile based on current savestates in game.");
         }
         private void BtnCreateSavefile_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -398,7 +368,7 @@ namespace Test
         }
         private void BtnDeleteSegment_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Delete selected segment and all of its savefiles.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Delete selected segment and all of its savefiles.");
         }
         private void BtnDeleteSegment_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -406,7 +376,7 @@ namespace Test
         }
         private void BtnDeleteSavefile1_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Delete selected savefile.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Delete selected savefile.");
         }
         private void BtnDeleteSavefile1_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -414,7 +384,7 @@ namespace Test
         }
         private void BtnImportSavestate_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Overites save in game to selected savefile.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Overwrites save in game to selected savefile.");
         }
         private void BtnImportSavestate_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -422,7 +392,7 @@ namespace Test
         }
         private void BtnUpdateSave_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Updates selected savefile to savefile in game.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Updates selected savefile to savefile in game.");
         }
         private void BtnUpdateSave_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -430,7 +400,7 @@ namespace Test
         }
         private void BtnDeleteCategory_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Delete selected category.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Delete selected category.");
         }
         private void BtnDeleteCategory_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -438,9 +408,17 @@ namespace Test
         }
         private void BtnCreateCategory_MouseEnter(object sender, MouseEventArgs e)
         {
-            tblkButtonDescription.Text = "Create category which segments and savefiles can be added to.";
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Create category which segments and savefiles can be added to.");
         }
         private void BtnCreateCategory_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HideButtonDescription();
+        }
+        private void BtnEditSettings_MouseEnter(object sender, MouseEventArgs e)
+        {
+            WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Edit Directory Settings");
+        }
+        private void BtnEditSettings_MouseLeave(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
         }
@@ -566,6 +544,7 @@ namespace Test
             return true;
         }
 
+        //Settings.
         private void BtnEditSettings_Click(object sender, RoutedEventArgs e)
         {
             settingsWindow = new Settings(this);

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Test
 {
+    /* Had issue with json serializing the game objects "DirectoryInfo" variables in a weird way so I made two string variables that represent basically the same thing to bypass the issue.
+     * These variables are updated when the actual directory info properties are assigned. 
+     */
+
     [JsonObject(MemberSerialization.OptIn)]
     public class Game
     {

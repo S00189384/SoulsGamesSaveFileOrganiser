@@ -79,7 +79,7 @@
     </ApplicationDefinition>
     <Compile Include="Category.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="JsonGameInfo.cs" />
+    <Compile Include="JsonDirectoryInfoFile.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="Savefile.cs" />
     <Compile Include="Settings.xaml.cs">

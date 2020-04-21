@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    /* Class which deals with updating the directories (savefiles and profiles) for each game. 
+    /* Class which deals with updating the directories (savefiles and profiles locations on PC) for each game. 
      * It updates a json file that is in the bin directory of the program files so the program can store the locations of directories chosen by the user.
      * Otherwise directory information would get reset everytime the user closes the program.
      * */
 
-    public static class JsonGameInfo
+    public static class JsonDirectoryInfoFile
     {
         private static string gameInfoFileName = "gameinfo.json";
         private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.None};
@@ -25,7 +25,7 @@ namespace Test
             string jsonContents = JsonConvert.SerializeObject(gamesListToUpdate.ToArray(),Formatting.Indented,serializerSettings);
             JArray jsonArray = JArray.Parse(jsonContents, new JsonLoadSettings {LineInfoHandling = LineInfoHandling.Ignore});
             int indexOfGame = gamesListToUpdate.IndexOf(gameToUpdate);
-            jsonArray[indexOfGame][key] = path.Replace(@"\", "\\");
+            jsonArray[indexOfGame][key] = path.Replace(@"\", "\\"); // Having a single \ in json file was giving issues.
             File.WriteAllText(gameInfoFileName, string.Empty);
             File.WriteAllText(gameInfoFileName, jsonArray.ToString());
         }
