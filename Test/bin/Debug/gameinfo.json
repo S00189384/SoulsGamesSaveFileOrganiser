@@ -1,116 +1,28 @@
 [
   {
-    "$id": "1",
+    "directoryName": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls",
+    "saveFileDirectoryName": "C:\\Users\\Shane\\Desktop\\DesSaveFileLocation",
     "Name": "Demon's Souls",
-    "Directory": "C:\\Users\\Shane\\Desktop\\directory for saves\\Demon's Souls",
-    "SaveFileDirectory": {
-      "$id": "3",
-      "OriginalPath": "C:\\Users\\Shane\\Desktop\\New savefile location",
-      "FullPath": "C:\\Users\\Shane\\Desktop\\New savefile location"
-    },
-    "Categories": [
-      {
-        "$id": "4",
-        "Name": "fgadgfag",
-        "Directory": {
-          "$id": "5",
-          "OriginalPath": "fgadgfag",
-          "FullPath": "C:\\Users\\Shane\\Desktop\\directory for saves\\Demon's Souls\\fgadgfag"
-        },
-        "Segments": [
-          {
-            "$id": "6",
-            "Name": "adgadg",
-            "Directory": {
-              "$id": "7",
-              "OriginalPath": "adgadg",
-              "FullPath": "C:\\Users\\Shane\\Desktop\\directory for saves\\Demon's Souls\\fgadgfag\\adgadg"
-            },
-            "Savefiles": [
-              {
-                "$id": "8",
-                "Name": "gadgadga",
-                "Directory": {
-                  "$id": "9",
-                  "OriginalPath": "gadgadga",
-                  "FullPath": "C:\\Users\\Shane\\Desktop\\directory for saves\\Demon's Souls\\fgadgfag\\adgadg\\gadgadga"
-                },
-                "Segment": {
-                  "$ref": "6"
-                }
-              }
-            ],
-            "Category": {
-              "$ref": "4"
-            }
-          }
-        ]
-      },
-      {
-        "$id": "10",
-        "Name": "sgsaeg",
-        "Directory": {
-          "$id": "11",
-          "OriginalPath": "sgsaeg",
-          "FullPath": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls\\sgsaeg"
-        },
-        "Segments": [
-          {
-            "$id": "12",
-            "Name": "wagwgt",
-            "Directory": {
-              "$id": "13",
-              "OriginalPath": "wagwgt",
-              "FullPath": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls\\sgsaeg\\wagwgt"
-            },
-            "Savefiles": [
-              {
-                "$id": "14",
-                "Name": "qagwaegwaeg",
-                "Directory": {
-                  "$id": "15",
-                  "OriginalPath": "qagwaegwaeg",
-                  "FullPath": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls\\sgsaeg\\wagwgt\\qagwaegwaeg"
-                },
-                "Segment": {
-                  "$ref": "12"
-                }
-              }
-            ],
-            "Category": {
-              "$ref": "10"
-            }
-          }
-        ]
-      }
-    ]
+    "Directory": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls"
   },
   {
-    "$id": "16",
-    "Name": "Dark Souls",
-    "Directory": null,
-    "SaveFileDirectory": null,
-    "Categories": []
+    "directoryName": null,
+    "saveFileDirectoryName": null,
+    "Name": "Dark Souls"
   },
   {
-    "$id": "17",
-    "Name": "Dark Souls Remastered",
-    "Directory": null,
-    "SaveFileDirectory": null,
-    "Categories": []
+    "directoryName": null,
+    "saveFileDirectoryName": null,
+    "Name": "Dark Souls Remastered"
   },
   {
-    "$id": "18",
-    "Name": "Dark Souls 2",
-    "Directory": null,
-    "SaveFileDirectory": null,
-    "Categories": []
+    "directoryName": null,
+    "saveFileDirectoryName": null,
+    "Name": "Dark Souls 2"
   },
   {
-    "$id": "19",
-    "Name": "Dark Souls 3",
-    "Directory": null,
-    "SaveFileDirectory": null,
-    "Categories": []
+    "directoryName": null,
+    "saveFileDirectoryName": null,
+    "Name": "Dark Souls 3"
   }
 ]

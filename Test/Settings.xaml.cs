@@ -54,10 +54,10 @@ namespace Test
 
                 //Updating the new save file location in the json file. 
 
-                //string jsonContents = JsonConvert.SerializeObject(mainWindow.GamesList.ToArray(),Formatting.Indented, new JsonSerializerSettings{PreserveReferencesHandling = PreserveReferencesHandling.Objects});
+                //string jsonContents = JsonConvert.SerializeObject(mainWindow.GamesList.ToArray(), Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
                 //JArray jsonArray = JArray.Parse(jsonContents);
                 //int indexOfGame = mainWindow.GamesList.IndexOf(selectedGame);
-                //jsonArray[indexOfGame]["SaveFileDirectory"] = saveFileLocation.Replace(@"\","\\");
+                //jsonArray[indexOfGame]["SaveFileDirectory"] = saveFileLocation.Replace(@"\", "\\");
                 //File.WriteAllText("gameinfo.json", string.Empty);
                 //File.WriteAllText("gameinfo.json", jsonArray.ToString());
 
