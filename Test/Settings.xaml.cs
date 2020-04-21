@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Test
 {
@@ -78,7 +79,7 @@ namespace Test
                 //Get the location of where the folder should be.
                 string userSelectedLocation = folderBrowserDialog.SelectedPath;
                 Game selectedGame = mainWindow.GamesList[GamesTab.SelectedIndex];
-                string newProfilesLocation = userSelectedLocation + "\\" + selectedGame.Name;
+                string newProfilesLocation = userSelectedLocation;
 
                 //If Current Game already has a directory) Get this directory and move it to the new location.
                 //Update the games directory.
@@ -86,9 +87,13 @@ namespace Test
                 {
                     //User doesn't select same location to move folder.
                     if (selectedGame.Directory.FullName != newProfilesLocation)
-                    {
-                        //Crashes if user selects folder that is the selected game's directory. Fix**
-                        Directory.Move(selectedGame.Directory.FullName, newProfilesLocation);
+                    {    
+                        FileSystem.CopyDirectory(selectedGame.Directory.FullName, newProfilesLocation);
+                        foreach (DirectoryInfo directory in selectedGame.Directory.GetDirectories())
+                        {
+                            directory.Delete(true);
+                        }
+
                         selectedGame.Directory = new DirectoryInfo(newProfilesLocation);
                     }
                 }

@@ -38,15 +38,6 @@ namespace Test
             ImportCreatedSavefiles();
         }
 
-        //public MainWindow()
-        //{
-        //    InitializeComponent();
-        //    settingsWindow = new Settings(this);
-        //    CreateGames();
-        //    JsonDirectoryInfoFile.UpdateGameDirectories(GamesList);
-        //    ImportCreatedSavefiles();
-        //}
-
         //Start
         private void CreateGames()
         {
@@ -414,11 +405,11 @@ namespace Test
         {
             HideButtonDescription();
         }
-        private void BtnEditSettings_MouseEnter(object sender, MouseEventArgs e)
+        private void BtnEditSettings_MouseEnter_1(object sender, MouseEventArgs e)
         {
             WindowUpdater.UpdateTextBlock(tblkButtonDescription, "Edit Directory Settings");
         }
-        private void BtnEditSettings_MouseLeave(object sender, MouseEventArgs e)
+        private void BtnEditSettings_MouseLeave_1(object sender, MouseEventArgs e)
         {
             HideButtonDescription();
         }
@@ -545,7 +536,7 @@ namespace Test
         }
 
         //Settings.
-        private void BtnEditSettings_Click(object sender, RoutedEventArgs e)
+        private void BtnEditSettings_Click_1(object sender, RoutedEventArgs e)
         {
             settingsWindow = new Settings(this);
             settingsWindow.Show();

@@ -1,14 +1,14 @@
 [
   {
-    "directoryName": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls",
-    "saveFileDirectoryName": "C:\\Users\\Shane\\Desktop\\DesSaveFileLocation",
-    "Name": "Demon's Souls",
-    "Directory": "C:\\Users\\Shane\\Desktop\\New directory location\\Demon's Souls"
+    "directoryName": "C:\\Users\\Shane\\Desktop\\Directory",
+    "saveFileDirectoryName": "C:\\Users\\Shane\\Desktop\\Savefile location",
+    "Name": "Demon's Souls"
   },
   {
-    "directoryName": null,
-    "saveFileDirectoryName": null,
-    "Name": "Dark Souls"
+    "directoryName": "C:\\Users\\Shane\\Desktop\\Directory",
+    "saveFileDirectoryName": "C:\\Users\\Shane\\Documents\\NBGI\\DARK SOULS REMASTERED\\840124993",
+    "Name": "Dark Souls",
+    "SaveFileDirectory": "C:\\Users\\Shane\\Documents\\NBGI\\DARK SOULS REMASTERED\\840124993"
   },
   {
     "directoryName": null,

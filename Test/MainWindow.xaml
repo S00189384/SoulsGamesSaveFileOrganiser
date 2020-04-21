@@ -67,17 +67,6 @@
                 </LinearGradientBrush>
             </ComboBox.Background>
         </ComboBox>
-
-        <Button x:Name="btnEditSettings" Click="BtnEditSettings_Click" Margin="660,0,10,-2" Background="{x:Null}" BorderBrush="White" Foreground="Black" Height="76" VerticalAlignment="Bottom" MouseEnter="BtnEditSettings_MouseEnter" MouseLeave="BtnEditSettings_MouseLeave">
-            <Button.Template>
-                <ControlTemplate>
-                    <Ellipse HorizontalAlignment="Left" Height="45" Margin="0,0,0,0" VerticalAlignment="Top" Width="45">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Pictures/settings.png"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        <Button x:Name="btnEditSettings" Content="Settings" HorizontalAlignment="Left" Margin="617,367,0,0" VerticalAlignment="Top" Width="93" Height="50" Background="White" FontFamily="Poor Richard" FontSize="18" Click="BtnEditSettings_Click_1" MouseEnter="BtnEditSettings_MouseEnter_1" MouseLeave="BtnEditSettings_MouseLeave_1"/>
     </Grid>
 </Window>
