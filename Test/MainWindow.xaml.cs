@@ -1,20 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Test
 {
@@ -60,12 +52,12 @@ namespace Test
             comboBoxGame.SelectedIndex = 0;
             
         }
-        private void ImportCreatedSavefiles()
+        public void ImportCreatedSavefiles()
         {
             //For each game.
             for (int g = 0; g < GamesList.Count; g++)
             {
-                if(GamesList[g].Directory != null)
+                if(GamesList[g].Directory != null && Directory.Exists(GamesList[g].Directory.FullName))
                 {
                     //Categories in each game.
                     string[] categoriesInGame = System.IO.Directory.GetDirectories(GamesList[g].Directory.FullName);
@@ -239,9 +231,9 @@ namespace Test
                 {
                     //Get file name.
                     string fileName = System.IO.Path.GetFileName(nameoffile);
-                    //Combines folder location (DeS Folder) and file name (Emulator Folder)
+                    //Combines directory location and save file name.
                     string destFile = System.IO.Path.Combine(GetSelectedGame().SaveFileDirectory.FullName, fileName);
-                    //Copy method needs exact location of source file (Emulator folder) and destination file(Des Folder) and copies file here.
+                    //Copy method needs exact location of save file and destination file (profiles folder) and copies file here.
                     System.IO.File.Copy(nameoffile, destFile, true);
                 }
             }
@@ -419,6 +411,7 @@ namespace Test
         {
             //Background images are indexed to represent the souls games 0 - Demon's Souls / 1 - Dark Souls etc.
             //Using this index to update background image.
+            //Picture name format must have "BackgroundImage + index +.png" 
 
             int selectedGameIndex = GamesList.IndexOf(GetSelectedGame());
 
@@ -430,9 +423,15 @@ namespace Test
         //Making program not crash if user hasn't correct objects selected.
         private bool UserCanCreateObject<T>(Type typeOfObject, List<T> listToCheck, TextBox textBoxWithObjectName)
         {
-            if(GetSelectedGame().Directory == null)
+            if (GetSelectedGame().Directory == null)
             {
                 System.Windows.MessageBox.Show("Before you create a " + typeOfObject.Name.ToLower() + " you need to select a location for where you want to store the savefiles. You can do this in settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                return false;
+            }
+
+            if(!Directory.Exists(GetSelectedGame().Directory.FullName))
+            {
+                System.Windows.MessageBox.Show("Directory - " + GetSelectedGame().Directory.FullName + " - dooesn't exist. Please select another folder to store the files.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 return false;
             }
 

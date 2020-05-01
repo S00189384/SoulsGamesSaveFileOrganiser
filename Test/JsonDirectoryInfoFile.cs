@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Test
 {
     /* Class which deals with updating the directories (savefiles and profiles locations on PC) for each game. 
-     * It updates a json file that is in the bin directory of the program files so the program can store the locations of directories chosen by the user.
+     * It updates a json file that is in the bin directory of the program files (called "gameinfo") so the program can store the locations of directories chosen by the user.
      * Otherwise directory information would get reset everytime the user closes the program.
      * */
 
