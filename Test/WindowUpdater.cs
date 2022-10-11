@@ -8,7 +8,6 @@ using System.Windows.Controls;
 namespace Test
 {
     //Class that helps update a window (text / listbox etc.) in WPF.
-    //Felt it made things more readable.
 
     public static class WindowUpdater
     {

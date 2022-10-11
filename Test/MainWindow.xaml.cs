@@ -49,8 +49,7 @@ namespace Test
             GamesList.Add(DarkSouls3);
 
             comboBoxGame.ItemsSource = GamesList;
-            comboBoxGame.SelectedIndex = 0;
-            
+            comboBoxGame.SelectedIndex = 0;           
         }
         public void ImportCreatedSavefiles()
         {
@@ -133,7 +132,12 @@ namespace Test
 
             //Delete Category and Folder with all its content.
             Category categoryToDelete = GetSelectedCategory();
-            System.IO.Directory.Delete(categoryToDelete.Directory.FullName, true);
+            try
+            {
+                System.IO.Directory.Delete(categoryToDelete.Directory.FullName, true);
+            }
+            catch (Exception) { }
+
             GetSelectedGame().Categories.Remove(categoryToDelete);
             categoryToDelete = null;
 

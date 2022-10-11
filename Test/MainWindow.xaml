@@ -43,7 +43,6 @@
         <Button x:Name="btnUpdateSave" Content="Update Save" HorizontalAlignment="Left" Margin="546,248,0,0" VerticalAlignment="Top" Width="93" Height="50" FontFamily="Poor Richard" FontSize="16" Click="BtnUpdateSave_Click" Background="White" FontStyle="Italic" MouseEnter="BtnUpdateSave_MouseEnter" MouseLeave="BtnUpdateSave_MouseLeave"/>
         <Button x:Name="btnDeleteSegment" Content="Delete" HorizontalAlignment="Left" Margin="285,362,0,0" VerticalAlignment="Top" Width="66" FontFamily="Poor Richard" FontSize="18" Click="BtnDeleteSegment_Click" Background="#FFC51F1F" FontStyle="Italic" Height="24" MouseEnter="BtnDeleteSegment_MouseEnter" MouseLeave="BtnDeleteSegment_MouseLeave"/>
         <Button x:Name="btnDeleteSavefile1" Content="Delete " HorizontalAlignment="Left" Margin="459,362,0,0" VerticalAlignment="Top" Width="72" FontFamily="Poor Richard" Height="24" FontSize="18" Click="BtnDeleteSavefile1_Click" Background="#FFD12020" FontStyle="Italic" MouseEnter="BtnDeleteSavefile1_MouseEnter" MouseLeave="BtnDeleteSavefile1_MouseLeave"/>
-        <TextBlock x:Name="tblkButtonDescription" HorizontalAlignment="Center" Margin="155,400,168,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="26" Width="407" FontFamily="Poor Richard" FontSize="16" TextDecorations="{x:Null}"/>
         <TextBlock x:Name="tblkHeader3" HorizontalAlignment="Left" Margin="60,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Category" FontFamily="Poor Richard" FontSize="24" Foreground="Black" FontStyle="Italic"/>
         <Button x:Name="btnCreateCategory" Content="Create" HorizontalAlignment="Left" Margin="38,254,0,0" VerticalAlignment="Top" Width="69" Height="25" FontSize="18" FontFamily="Poor Richard" Click="BtnCreateCategory_Click" Background="#FF0CFF00" FontStyle="Italic" MouseEnter="BtnCreateCategory_MouseEnter" MouseLeave="BtnCreateCategory_MouseLeave"/>
         <TextBox x:Name="txboxCreateCategory" HorizontalAlignment="Left" Height="26" Margin="47,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="White"/>
@@ -68,5 +67,6 @@
             </ComboBox.Background>
         </ComboBox>
         <Button x:Name="btnEditSettings" Content="Settings" HorizontalAlignment="Left" Margin="617,367,0,0" VerticalAlignment="Top" Width="93" Height="50" Background="White" FontFamily="Poor Richard" FontSize="18" Click="BtnEditSettings_Click_1" MouseEnter="BtnEditSettings_MouseEnter_1" MouseLeave="BtnEditSettings_MouseLeave_1"/>
+        <TextBlock x:Name="tblkButtonDescription" Margin="245,404,234,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Poor Richard" Foreground="White" FontSize="14" HorizontalAlignment="Center" MaxWidth="500" Height="18"/>
     </Grid>
 </Window>
