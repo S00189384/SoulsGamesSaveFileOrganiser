@@ -15,6 +15,7 @@ This is the first version of this save file organiser, and at the moment it only
 ## Features I would like to add
 - Option to create savefiles for any game.
 - Replace savefile option.
+- Ability to rename any segment or category.
 - Keybinds for importing / replacing a savefile. 
 
 ## Screenshots
